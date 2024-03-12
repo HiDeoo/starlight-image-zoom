@@ -1,0 +1,46 @@
+{
+  "name": "starlight-medium-zoom",
+  "version": "0.0.1",
+  "license": "MIT",
+  "description": "",
+  "author": "HiDeoo <github@hideoo.dev> (https://hideoo.dev)",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test implemented.\" && exit 1",
+    "lint": "prettier -c --cache . && eslint . --cache --max-warnings=0 && tsc --noEmit",
+    "prepare": "husky",
+    "prepublishOnly": "pnpm build"
+  },
+  "devDependencies": {
+    "@hideoo/eslint-config": "3.0.1",
+    "@hideoo/prettier-config": "2.0.0",
+    "@hideoo/tsconfig": "2.0.1",
+    "eslint": "8.57.0",
+    "husky": "9.0.11",
+    "lint-staged": "15.2.2",
+    "prettier": "3.2.5",
+    "typescript": "5.4.2"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "pnpm@8.15.4",
+  "publishConfig": {
+    "access": "public"
+  },
+  "sideEffects": false,
+  "keywords": [],
+  "homepage": "https://github.com/HiDeoo/starlight-medium-zoom",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HiDeoo/starlight-medium-zoom.git"
+  },
+  "bugs": "https://github.com/HiDeoo/starlight-medium-zoom/issues",
+  "prettier": "@hideoo/prettier-config",
+  "lint-staged": {
+    "*": [
+      "prettier -w -u --cache",
+      "eslint --cache --no-warn-ignored --max-warnings=0"
+    ]
+  }
+}
