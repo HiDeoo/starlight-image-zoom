@@ -1,25 +1,15 @@
 {
-  "name": "starlight-medium-zoom-monorepo",
+  "name": "starlight-medium-zoom-docs",
   "version": "0.0.1",
   "license": "MIT",
   "description": "// TODO(HiDeoo) ",
   "author": "HiDeoo <github@hideoo.dev> (https://hideoo.dev)",
   "type": "module",
   "scripts": {
-    "test": "pnpm --stream -r test",
-    "lint": "pnpm -r lint",
-    "prepare": "husky"
-  },
-  "devDependencies": {
-    "@hideoo/eslint-config": "3.0.1",
-    "@hideoo/prettier-config": "2.0.0",
-    "@hideoo/tsconfig": "2.0.1",
-    "eslint": "8.57.0",
-    "husky": "9.0.11",
-    "lint-staged": "15.2.2",
-    "prettier": "3.2.5",
-    "prettier-plugin-astro": "0.13.0",
-    "typescript": "5.4.2"
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "lint": "prettier -c --cache . && eslint . --cache --max-warnings=0"
   },
   "engines": {
     "node": ">=18"
@@ -36,10 +26,9 @@
     "url": "https://github.com/HiDeoo/starlight-medium-zoom.git"
   },
   "bugs": "https://github.com/HiDeoo/starlight-medium-zoom/issues",
-  "lint-staged": {
-    "*": [
-      "prettier -w -u --cache",
-      "eslint --cache --no-warn-ignored --max-warnings=0"
-    ]
+  "dependencies": {
+    "@astrojs/starlight": "0.21.1",
+    "astro": "4.5.1",
+    "sharp": "0.33.2"
   }
 }
