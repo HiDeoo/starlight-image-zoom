@@ -1,5 +1,6 @@
 import starlight from '@astrojs/starlight'
 import { defineConfig } from 'astro/config'
+import starlightMediumZoom from 'starlight-medium-zoom'
 
 export default defineConfig({
   integrations: [
@@ -7,7 +8,7 @@ export default defineConfig({
       editLink: {
         baseUrl: 'https://github.com/HiDeoo/starlight-medium-zoom/edit/main/docs/',
       },
-      plugins: [],
+      plugins: [starlightMediumZoom()],
       social: {
         github: 'https://github.com/HiDeoo/starlight-medium-zoom',
       },

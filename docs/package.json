@@ -11,6 +11,12 @@
     "preview": "astro preview",
     "lint": "prettier -c --cache . && eslint . --cache --max-warnings=0"
   },
+  "dependencies": {
+    "@astrojs/starlight": "0.21.1",
+    "astro": "4.5.1",
+    "sharp": "0.33.2",
+    "starlight-medium-zoom": "workspace:*"
+  },
   "engines": {
     "node": ">=18"
   },
@@ -25,10 +31,5 @@
     "type": "git",
     "url": "https://github.com/HiDeoo/starlight-medium-zoom.git"
   },
-  "bugs": "https://github.com/HiDeoo/starlight-medium-zoom/issues",
-  "dependencies": {
-    "@astrojs/starlight": "0.21.1",
-    "astro": "4.5.1",
-    "sharp": "0.33.2"
-  }
+  "bugs": "https://github.com/HiDeoo/starlight-medium-zoom/issues"
 }

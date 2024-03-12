@@ -1,0 +1,37 @@
+---
+import 'medium-zoom/dist/style.css'
+---
+
+<starlight-medium-zoom></starlight-medium-zoom>
+
+<style>
+  :global(:is(.medium-zoom-overlay, .medium-zoom-image--opened)) {
+    z-index: 50;
+  }
+</style>
+
+<script>
+  customElements.define(
+    'starlight-medium-zoom',
+    class StarlightMediumZoom extends HTMLElement {
+      constructor() {
+        super()
+
+        // TODO(HiDeoo)
+        const image = document.querySelector<HTMLDivElement>('.sl-markdown-content img')
+
+        window.addEventListener('DOMContentLoaded', () => {
+          if (!image) return
+
+          const onIdle = window.requestIdleCallback || ((cb) => setTimeout(cb, 1))
+
+          onIdle(async () => {
+            const { default: mediumZoom } = await import('medium-zoom/dist/pure')
+
+            mediumZoom('.sl-markdown-content img')
+          })
+        })
+      }
+    },
+  )
+</script>
