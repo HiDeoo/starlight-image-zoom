@@ -1,12 +1,61 @@
----
-import 'medium-zoom/dist/style.css'
----
-
-<starlight-medium-zoom></starlight-medium-zoom>
+<starlight-medium-zoom>
+  <template id="starlight-medium-zoom-template">
+    <div class="starlight-medium-zoom-content">
+      <div class="starlight-medium-zoom-img"></div>
+      <div class="starlight-medium-zoom-caption">XXXXX</div>
+    </div>
+  </template>
+</starlight-medium-zoom>
 
 <style>
-  :global(:is(.medium-zoom-overlay, .medium-zoom-image--opened)) {
+  :global(.medium-zoom-overlay) {
+    inset: 0;
+    opacity: 0;
+    position: fixed;
+    transition: opacity 0.3s;
+    will-change: opacity;
     z-index: 50;
+  }
+
+  :global(.medium-zoom--opened .medium-zoom-overlay) {
+    cursor: zoom-out;
+    opacity: 1;
+  }
+
+  :global(.medium-zoom-image) {
+    cursor: zoom-in;
+    transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1);
+  }
+
+  :global(.medium-zoom-image--hidden) {
+    visibility: hidden;
+  }
+
+  :global(.medium-zoom-image--opened) {
+    cursor: zoom-out;
+    position: relative;
+    will-change: transform;
+    z-index: 52;
+  }
+
+  .starlight-medium-zoom-content {
+    height: 520px;
+    inset: 0;
+    margin: auto 2rem;
+    position: fixed;
+    z-index: 51;
+  }
+
+  .starlight-medium-zoom-img {
+    background-color: var(--sl-color-bg);
+    border: 1px solid var(--sl-color-gray-6);
+    height: 100%;
+  }
+
+  .starlight-medium-zoom-caption {
+    background-color: var(--sl-color-bg-sidebar);
+    border: 1px solid var(--sl-color-gray-6);
+    border-top: 0;
   }
 </style>
 
@@ -28,7 +77,11 @@ import 'medium-zoom/dist/style.css'
           onIdle(async () => {
             const { default: mediumZoom } = await import('medium-zoom/dist/pure')
 
-            mediumZoom('.sl-markdown-content img')
+            mediumZoom('.sl-markdown-content img', {
+              background: 'hsla(224 10% 10% / 0.95)',
+              container: '.starlight-medium-zoom-img',
+              template: '#starlight-medium-zoom-template',
+            })
           })
         })
       }
