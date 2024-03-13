@@ -19,7 +19,10 @@ export const expect = baseExpect.extend({
     let expected: unknown
     let pass = false
 
-    const imageAlt = await image.getAttribute('alt')
+    await image.scrollIntoViewIfNeeded()
+
+    let imageAlt = await image.getAttribute('alt')
+    imageAlt = imageAlt?.trim() ?? ''
 
     await image.click()
 
@@ -32,9 +35,17 @@ export const expect = baseExpect.extend({
       expected = 'visible'
       await baseExpect(page.locator('.medium-zoom-image.medium-zoom-image--opened')).toBeVisible()
 
-      // The caption should be the image's alt attribute.
-      expected = imageAlt
-      baseExpect(await page.locator('.starlight-medium-zoom-caption').textContent()).toBe(expected)
+      const captionLocator = page.locator('.starlight-medium-zoom-caption')
+
+      if (imageAlt.length === 0) {
+        // If the image has no alt attribute, the caption should not be visible.
+        expected = 'hidden'
+        await baseExpect(captionLocator).not.toBeVisible()
+      } else {
+        // The caption should be the image's alt attribute.
+        expected = imageAlt
+        baseExpect(await captionLocator.textContent()).toBe(expected)
+      }
 
       pass = true
     } catch (error) {

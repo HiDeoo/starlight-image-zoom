@@ -2,7 +2,7 @@
   <template id="starlight-medium-zoom-template">
     <div class="starlight-medium-zoom-content">
       <div class="starlight-medium-zoom-img"></div>
-      <div class="starlight-medium-zoom-caption">XXXXX</div>
+      <div class="starlight-medium-zoom-caption starlight-medium-zoom-caption-hidden"></div>
     </div>
   </template>
 </starlight-medium-zoom>
@@ -57,6 +57,10 @@
     border: 1px solid var(--sl-color-gray-6);
     border-top: 0;
   }
+
+  .starlight-medium-zoom-caption-hidden {
+    display: none;
+  }
 </style>
 
 <script>
@@ -95,7 +99,15 @@
       #setCaption(text: string) {
         if (!this.#caption) return
 
-        this.#caption.textContent = text
+        text = text.trim()
+
+        if (text.length === 0) {
+          this.#caption.classList.add('starlight-medium-zoom-caption-hidden')
+          return
+        } else {
+          this.#caption.classList.remove('starlight-medium-zoom-caption-hidden')
+          this.#caption.textContent = text
+        }
       }
 
       #onOpen = (event: Event) => {
