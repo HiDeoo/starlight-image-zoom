@@ -1,5 +1,6 @@
 ---
-title: MDX tests
+title: Shared syntax Markdown tests
+slug: tests/shared-syntax-md
 ---
 
 An image using Markdown syntax:
