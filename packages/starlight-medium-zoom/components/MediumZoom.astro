@@ -1,11 +1,13 @@
 <starlight-medium-zoom>
-  <template id="smz-template">
-    <div class="smz-content">
-      <div class="smz-img"></div>
-      <div class="smz-caption smz-caption-hidden"></div>
-    </div>
+  <template>
+    <section></section>
+    <div data-starlight-medium-zoom-caption></div>
   </template>
 </starlight-medium-zoom>
+
+<!-- // TODO(HiDeoo) animation durable variable -->
+<!-- // TODO(HiDeoo) scroll amount -->
+<!-- // TODO(HiDeoo) delay caption -->
 
 <style>
   :global(.medium-zoom-overlay) {
@@ -14,17 +16,12 @@
     position: fixed;
     transition: opacity 0.3s;
     will-change: opacity;
-    z-index: 50;
+    z-index: 90;
   }
 
   :global(.medium-zoom--opened .medium-zoom-overlay) {
     cursor: zoom-out;
     opacity: 1;
-  }
-
-  :global(.medium-zoom-image) {
-    cursor: zoom-in;
-    transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1);
   }
 
   :global(.medium-zoom-image--hidden) {
@@ -35,31 +32,22 @@
     cursor: zoom-out;
     position: relative;
     will-change: transform;
-    z-index: 52;
+    z-index: 91;
   }
 
-  .smz-content {
-    height: 520px;
-    inset: 0;
-    margin: auto 2rem;
+  :global(.medium-zoom-image) {
+    cursor: zoom-in;
+    transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1);
+  }
+
+  [data-starlight-medium-zoom-caption] {
+    background-color: color-mix(in srgb, var(--sl-color-bg-nav), transparent 40%);
+    border-top: 1px solid var(--sl-color-hairline);
+    bottom: 0;
+    left: 0;
     position: fixed;
-    z-index: 51;
-  }
-
-  .smz-img {
-    background-color: var(--sl-color-bg);
-    border: 1px solid var(--sl-color-gray-6);
-    height: 100%;
-  }
-
-  .smz-caption {
-    background-color: var(--sl-color-bg-sidebar);
-    border: 1px solid var(--sl-color-gray-6);
-    border-top: 0;
-  }
-
-  .smz-caption-hidden {
-    display: none;
+    right: 0;
+    z-index: 92;
   }
 </style>
 
@@ -67,28 +55,28 @@
   customElements.define(
     'starlight-medium-zoom',
     class StarlightMediumZoom extends HTMLElement {
-      #caption: HTMLDivElement | null | undefined
+      #contentImageSelector = '.sl-markdown-content img'
 
       constructor() {
         super()
-
-        // TODO(HiDeoo)
-        const image = document.querySelector<HTMLDivElement>('.sl-markdown-content img')
-        if (!image) return
-
-        const template = document.querySelector<HTMLTemplateElement>('#smz-template')
-        this.#caption = template?.content.querySelector('.smz-caption')
 
         window.addEventListener('DOMContentLoaded', () => {
           const onIdle = window.requestIdleCallback || ((cb) => setTimeout(cb, 1))
 
           onIdle(async () => {
+            const image = document.querySelector<HTMLDivElement>(this.#contentImageSelector)
+            if (!image) return
+
+            const template = this.querySelector('template')
+            const templateSection = template?.content.querySelector('section')
+            if (!template || !templateSection) return
+
             const { default: mediumZoom } = await import('medium-zoom/dist/pure')
 
-            const zoom = mediumZoom('.sl-markdown-content img', {
-              background: 'hsla(224 10% 10% / 0.95)',
-              container: '.smz-img',
-              template: '#smz-template',
+            const zoom = mediumZoom(this.#contentImageSelector, {
+              background: 'var(--sl-color-black)',
+              container: templateSection,
+              template,
             })
 
             zoom.on('open', this.#onOpen)
@@ -96,24 +84,25 @@
         })
       }
 
-      #setCaption(text: string) {
-        if (!this.#caption) return
-
-        text = text.trim()
-
-        if (text.length === 0) {
-          this.#caption.classList.add('smz-caption-hidden')
-          return
-        } else {
-          this.#caption.classList.remove('smz-caption-hidden')
-          this.#caption.textContent = text
-        }
-      }
-
       #onOpen = (event: Event) => {
         if (!(event.target instanceof HTMLImageElement)) return
 
         this.#setCaption(event.target.alt)
+      }
+
+      #setCaption(text: string) {
+        requestAnimationFrame(() => {
+          const footer = document.querySelector('[data-starlight-medium-zoom-caption]')
+          if (!footer) return
+
+          text = text.trim()
+
+          if (text.length === 0) {
+            footer.remove()
+          } else {
+            footer.textContent = text
+          }
+        })
       }
     },
   )
