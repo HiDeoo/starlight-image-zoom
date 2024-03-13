@@ -1,50 +1,56 @@
 import { expect, test } from './test'
 
-test('zooms an image using Markdown syntax', async ({ testPage }) => {
-  await testPage.goto('markdown')
+const formats = ['markdown', 'mdx']
 
-  await expect(testPage.getNthImage(0)).toBeZoomedAfterClick()
-})
+for (const format of formats) {
+  test.describe(`zooms in ${format} files`, () => {
+    test('zooms an image using Markdown syntax', async ({ testPage }) => {
+      await testPage.goto('markdown')
 
-test('zooms a remote image using Markdown syntax', async ({ testPage }) => {
-  await testPage.goto('markdown')
+      await expect(testPage.getNthImage(0)).toBeZoomedAfterClick()
+    })
 
-  await expect(testPage.getNthImage(1)).toBeZoomedAfterClick()
-})
+    test('zooms a remote image using Markdown syntax', async ({ testPage }) => {
+      await testPage.goto('markdown')
 
-test('zooms an image using Markdown syntax with no caption', async ({ testPage }) => {
-  await testPage.goto('markdown')
+      await expect(testPage.getNthImage(1)).toBeZoomedAfterClick()
+    })
 
-  await expect(testPage.getNthImage(2)).toBeZoomedAfterClick()
-})
+    test('zooms an image using Markdown syntax with no caption', async ({ testPage }) => {
+      await testPage.goto('markdown')
 
-test('zooms an image using HTML syntax with the `img` tag', async ({ testPage }) => {
-  await testPage.goto('markdown')
+      await expect(testPage.getNthImage(2)).toBeZoomedAfterClick()
+    })
 
-  await expect(testPage.getNthImage(3)).toBeZoomedAfterClick()
-})
+    test('zooms an image using HTML syntax with the `img` tag', async ({ testPage }) => {
+      await testPage.goto('markdown')
 
-test('zooms an image using HTML syntax with the `picture` tag', async ({ testPage }) => {
-  await testPage.goto('markdown')
+      await expect(testPage.getNthImage(3)).toBeZoomedAfterClick()
+    })
 
-  await expect(testPage.getNthImage(4)).toBeZoomedAfterClick()
-})
+    test('zooms an image using HTML syntax with the `picture` tag', async ({ testPage }) => {
+      await testPage.goto('markdown')
 
-test('zooms the expected image when using HTML syntax with the `picture` tag', async ({ testPage }) => {
-  await testPage.page.emulateMedia({ colorScheme: 'light' })
-  await testPage.goto('markdown')
+      await expect(testPage.getNthImage(4)).toBeZoomedAfterClick()
+    })
 
-  const image = testPage.getNthImage(4)
-  await image.click()
+    test('zooms the expected image when using HTML syntax with the `picture` tag', async ({ testPage }) => {
+      await testPage.page.emulateMedia({ colorScheme: 'light' })
+      await testPage.goto('markdown')
 
-  expect(await testPage.getZoomedImage().getAttribute('src')).toMatch(/-dark.png$/)
+      const image = testPage.getNthImage(4)
+      await image.click()
 
-  await testPage.closeZoomedImage()
+      expect(await testPage.getZoomedImage().getAttribute('src')).toMatch(/-dark.png$/)
 
-  await testPage.page.emulateMedia({ colorScheme: 'dark' })
-  await testPage.page.reload()
+      await testPage.closeZoomedImage()
 
-  await image.click()
+      await testPage.page.emulateMedia({ colorScheme: 'dark' })
+      await testPage.page.reload()
 
-  expect(await testPage.getZoomedImage().getAttribute('src')).toMatch(/-light.png$/)
-})
+      await image.click()
+
+      expect(await testPage.getZoomedImage().getAttribute('src')).toMatch(/-light.png$/)
+    })
+  })
+}
