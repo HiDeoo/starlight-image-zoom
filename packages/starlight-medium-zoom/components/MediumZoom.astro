@@ -1,8 +1,8 @@
 <starlight-medium-zoom>
-  <template id="starlight-medium-zoom-template">
-    <div class="starlight-medium-zoom-content">
-      <div class="starlight-medium-zoom-img"></div>
-      <div class="starlight-medium-zoom-caption starlight-medium-zoom-caption-hidden"></div>
+  <template id="smz-template">
+    <div class="smz-content">
+      <div class="smz-img"></div>
+      <div class="smz-caption smz-caption-hidden"></div>
     </div>
   </template>
 </starlight-medium-zoom>
@@ -38,7 +38,7 @@
     z-index: 52;
   }
 
-  .starlight-medium-zoom-content {
+  .smz-content {
     height: 520px;
     inset: 0;
     margin: auto 2rem;
@@ -46,19 +46,19 @@
     z-index: 51;
   }
 
-  .starlight-medium-zoom-img {
+  .smz-img {
     background-color: var(--sl-color-bg);
     border: 1px solid var(--sl-color-gray-6);
     height: 100%;
   }
 
-  .starlight-medium-zoom-caption {
+  .smz-caption {
     background-color: var(--sl-color-bg-sidebar);
     border: 1px solid var(--sl-color-gray-6);
     border-top: 0;
   }
 
-  .starlight-medium-zoom-caption-hidden {
+  .smz-caption-hidden {
     display: none;
   }
 </style>
@@ -76,8 +76,8 @@
         const image = document.querySelector<HTMLDivElement>('.sl-markdown-content img')
         if (!image) return
 
-        const template = document.querySelector<HTMLTemplateElement>('#starlight-medium-zoom-template')
-        this.#caption = template?.content.querySelector('.starlight-medium-zoom-caption')
+        const template = document.querySelector<HTMLTemplateElement>('#smz-template')
+        this.#caption = template?.content.querySelector('.smz-caption')
 
         window.addEventListener('DOMContentLoaded', () => {
           const onIdle = window.requestIdleCallback || ((cb) => setTimeout(cb, 1))
@@ -87,8 +87,8 @@
 
             const zoom = mediumZoom('.sl-markdown-content img', {
               background: 'hsla(224 10% 10% / 0.95)',
-              container: '.starlight-medium-zoom-img',
-              template: '#starlight-medium-zoom-template',
+              container: '.smz-img',
+              template: '#smz-template',
             })
 
             zoom.on('open', this.#onOpen)
@@ -102,10 +102,10 @@
         text = text.trim()
 
         if (text.length === 0) {
-          this.#caption.classList.add('starlight-medium-zoom-caption-hidden')
+          this.#caption.classList.add('smz-caption-hidden')
           return
         } else {
-          this.#caption.classList.remove('starlight-medium-zoom-caption-hidden')
+          this.#caption.classList.remove('smz-caption-hidden')
           this.#caption.textContent = text
         }
       }
