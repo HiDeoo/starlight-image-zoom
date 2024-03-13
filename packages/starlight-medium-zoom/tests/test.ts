@@ -31,9 +31,9 @@ export const expect = baseExpect.extend({
       expected = 'visible'
       await baseExpect(page.locator('.medium-zoom-overlay')).toBeVisible()
 
-      // The image should be visible.
+      // The zoomed image should be visible.
       expected = 'visible'
-      await baseExpect(page.locator('.medium-zoom-image.medium-zoom-image--opened')).toBeVisible()
+      await baseExpect(page.locator('.medium-zoom-image--opened')).toBeVisible()
 
       const captionLocator = page.locator('.starlight-medium-zoom-caption')
 

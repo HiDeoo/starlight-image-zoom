@@ -29,3 +29,22 @@ test('zooms an image using HTML syntax with the `picture` tag', async ({ testPag
 
   await expect(testPage.getNthImage(4)).toBeZoomedAfterClick()
 })
+
+test('zooms the expected image when using HTML syntax with the `picture` tag', async ({ testPage }) => {
+  await testPage.page.emulateMedia({ colorScheme: 'light' })
+  await testPage.goto('markdown')
+
+  const image = testPage.getNthImage(4)
+  await image.click()
+
+  expect(await testPage.getZoomedImage().getAttribute('src')).toMatch(/-dark.png$/)
+
+  await testPage.closeZoomedImage()
+
+  await testPage.page.emulateMedia({ colorScheme: 'dark' })
+  await testPage.page.reload()
+
+  await image.click()
+
+  expect(await testPage.getZoomedImage().getAttribute('src')).toMatch(/-light.png$/)
+})

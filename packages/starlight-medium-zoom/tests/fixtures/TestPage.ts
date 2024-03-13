@@ -12,4 +12,12 @@ export class TestPage {
     // Note that `getByRole('img')` cannot be used as images with no alt attribute would not be found.
     return this.page.locator('.sl-markdown-content img').locator(`nth=${n}`)
   }
+
+  getZoomedImage() {
+    return this.page.locator('.medium-zoom-image--opened')
+  }
+
+  closeZoomedImage() {
+    return this.page.locator('.medium-zoom-image--opened').click()
+  }
 }
