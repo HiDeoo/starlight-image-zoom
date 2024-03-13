@@ -63,27 +63,45 @@
   customElements.define(
     'starlight-medium-zoom',
     class StarlightMediumZoom extends HTMLElement {
+      #caption: HTMLDivElement | null | undefined
+
       constructor() {
         super()
 
         // TODO(HiDeoo)
         const image = document.querySelector<HTMLDivElement>('.sl-markdown-content img')
+        if (!image) return
+
+        const template = document.querySelector<HTMLTemplateElement>('#starlight-medium-zoom-template')
+        this.#caption = template?.content.querySelector('.starlight-medium-zoom-caption')
 
         window.addEventListener('DOMContentLoaded', () => {
-          if (!image) return
-
           const onIdle = window.requestIdleCallback || ((cb) => setTimeout(cb, 1))
 
           onIdle(async () => {
             const { default: mediumZoom } = await import('medium-zoom/dist/pure')
 
-            mediumZoom('.sl-markdown-content img', {
+            const zoom = mediumZoom('.sl-markdown-content img', {
               background: 'hsla(224 10% 10% / 0.95)',
               container: '.starlight-medium-zoom-img',
               template: '#starlight-medium-zoom-template',
             })
+
+            zoom.on('open', this.#onOpen)
           })
         })
+      }
+
+      #setCaption(text: string) {
+        if (!this.#caption) return
+
+        this.#caption.textContent = text
+      }
+
+      #onOpen = (event: Event) => {
+        if (!(event.target instanceof HTMLImageElement)) return
+
+        this.#setCaption(event.target.alt)
       }
     },
   )
