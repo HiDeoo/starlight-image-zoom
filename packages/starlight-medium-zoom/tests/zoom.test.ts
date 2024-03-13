@@ -17,3 +17,15 @@ test('zooms an image using Markdown syntax with no caption', async ({ testPage }
 
   await expect(testPage.getNthImage(2)).toBeZoomedAfterClick()
 })
+
+test('zooms an image using HTML syntax with the `img` tag', async ({ testPage }) => {
+  await testPage.goto('markdown')
+
+  await expect(testPage.getNthImage(3)).toBeZoomedAfterClick()
+})
+
+test('zooms an image using HTML syntax with the `picture` tag', async ({ testPage }) => {
+  await testPage.goto('markdown')
+
+  await expect(testPage.getNthImage(4)).toBeZoomedAfterClick()
+})

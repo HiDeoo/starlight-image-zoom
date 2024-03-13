@@ -4,7 +4,7 @@ title: Markdown test
 
 An image using Markdown syntax:
 
-![Starlight logo](../../../assets/tests/starlight.png)
+![Starlight logo](../../../assets/tests/starlight-light.png)
 
 A remote image using Markdown syntax:
 
@@ -12,4 +12,21 @@ A remote image using Markdown syntax:
 
 An image using Markdown syntax with no alt text:
 
-![](../../../assets/tests/starlight.png)
+![](../../../assets/tests/starlight-light.png)
+
+An image using HTML syntax with the `img` tag:
+
+<img src="https://astro.build/assets/press/astro-logo-light-gradient.png" alt="Astro logo" />
+
+An image using HTML syntax with the `picture` tag:
+
+<picture>
+  <source
+    media="(prefers-color-scheme: dark)"
+    srcset="https://astro.build/assets/press/astro-icon-light.png"
+  />
+  <img
+    alt="Astro logomark"
+    src="https://astro.build/assets/press/astro-icon-dark.png"
+  />
+</picture>
