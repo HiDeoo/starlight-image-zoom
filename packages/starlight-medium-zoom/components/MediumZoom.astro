@@ -1,53 +1,66 @@
 <starlight-medium-zoom>
   <template>
     <section></section>
-    <div data-starlight-medium-zoom-caption></div>
+    <div data-smz-caption></div>
   </template>
 </starlight-medium-zoom>
 
-<!-- // TODO(HiDeoo) animation durable variable -->
-<!-- // TODO(HiDeoo) scroll amount -->
-<!-- // TODO(HiDeoo) delay caption -->
+<style is:global>
+  :root {
+    --smz-animation-duration: 300ms;
 
-<style>
-  :global(.medium-zoom-overlay) {
+    --smz-z-index-overlay: 90;
+    --smz-z-index-image: 91;
+    --smz-z-index-caption: 92;
+  }
+
+  .medium-zoom-overlay {
     inset: 0;
     opacity: 0;
     position: fixed;
-    transition: opacity 0.3s;
+    transition: opacity var(--smz-animation-duration);
     will-change: opacity;
-    z-index: 90;
+    z-index: var(--smz-z-index-overlay);
   }
 
-  :global(.medium-zoom--opened .medium-zoom-overlay) {
+  .medium-zoom--opened .medium-zoom-overlay {
     cursor: zoom-out;
     opacity: 1;
   }
 
-  :global(.medium-zoom-image--hidden) {
+  .medium-zoom-image--hidden {
     visibility: hidden;
   }
 
-  :global(.medium-zoom-image--opened) {
+  .medium-zoom-image--opened {
     cursor: zoom-out;
     position: relative;
     will-change: transform;
-    z-index: 91;
+    z-index: var(--smz-z-index-image);
   }
 
-  :global(.medium-zoom-image) {
+  .medium-zoom-image {
     cursor: zoom-in;
-    transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1);
+    transition: transform var(--smz-animation-duration) cubic-bezier(0.2, 0, 0.2, 1);
   }
+</style>
 
-  [data-starlight-medium-zoom-caption] {
+<style>
+  [data-smz-caption] {
     background-color: color-mix(in srgb, var(--sl-color-bg-nav), transparent 40%);
     border-top: 1px solid var(--sl-color-hairline);
     bottom: 0;
     left: 0;
+    opacity: 0;
     position: fixed;
     right: 0;
-    z-index: 92;
+    transition: opacity var(--smz-animation-duration);
+    will-change: opacity;
+    z-index: var(--smz-z-index-caption);
+  }
+
+  :global(.medium-zoom--opened) [data-smz-caption] {
+    opacity: 1;
   }
 </style>
 
@@ -77,6 +90,7 @@
             this.#zoom = mediumZoom(this.#contentImageSelector, {
               background: 'var(--sl-color-black)',
               container: templateSection,
+              scrollOffset: 15,
               template,
             })
 
@@ -107,7 +121,7 @@
 
       #setCaption(text: string) {
         requestAnimationFrame(() => {
-          const footer = document.querySelector('[data-starlight-medium-zoom-caption]')
+          const footer = document.querySelector('[data-smz-caption]')
           if (!footer) return
 
           text = text.trim()

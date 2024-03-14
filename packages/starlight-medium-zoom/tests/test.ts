@@ -35,7 +35,7 @@ export const expect = baseExpect.extend({
       expected = 'visible'
       await baseExpect(page.locator('.medium-zoom-image--opened')).toBeVisible()
 
-      const captionLocator = page.locator('[data-starlight-medium-zoom-caption]')
+      const captionLocator = page.locator('[data-smz-caption]')
 
       if (imageAlt.length === 0) {
         // If the image has no alt attribute, the caption should not be visible.
