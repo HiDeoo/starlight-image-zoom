@@ -56,6 +56,7 @@
     'starlight-medium-zoom',
     class StarlightMediumZoom extends HTMLElement {
       #contentImageSelector = '.sl-markdown-content img'
+      #zoom?: import('medium-zoom').Zoom
 
       constructor() {
         super()
@@ -73,13 +74,14 @@
 
             const { default: mediumZoom } = await import('medium-zoom/dist/pure')
 
-            const zoom = mediumZoom(this.#contentImageSelector, {
+            this.#zoom = mediumZoom(this.#contentImageSelector, {
               background: 'var(--sl-color-black)',
               container: templateSection,
               template,
             })
 
-            zoom.on('open', this.#onOpen)
+            this.#zoom.on('open', this.#onOpen)
+            this.#zoom.on('close', this.#onClose)
           })
         })
       }
@@ -88,6 +90,19 @@
         if (!(event.target instanceof HTMLImageElement)) return
 
         this.#setCaption(event.target.alt)
+
+        document.addEventListener('keydown', this.#onKeyDown)
+      }
+
+      #onClose = () => {
+        document.removeEventListener('keydown', this.#onKeyDown)
+      }
+
+      #onKeyDown = (event: KeyboardEvent) => {
+        if (event.key === 'Tab') {
+          event.preventDefault()
+          this.#zoom?.close()
+        }
       }
 
       #setCaption(text: string) {

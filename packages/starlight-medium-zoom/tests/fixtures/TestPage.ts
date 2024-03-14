@@ -1,6 +1,18 @@
-import type { Page } from '@playwright/test'
+import type { Locator, Page } from '@playwright/test'
 
 export class TestPage {
+  static #zoomedImageSelector = '.medium-zoom-image--opened'
+
+  static async zoomImage(image: Locator) {
+    await image.click()
+
+    // Wait for the zoomed image to be stable.
+    const zoomedImageLocator = image.page().locator(TestPage.#zoomedImageSelector)
+    const zoomedImageHandle = await zoomedImageLocator.elementHandle()
+    await zoomedImageHandle?.waitForElementState('stable')
+    await zoomedImageHandle?.waitForElementState('stable')
+  }
+
   constructor(public readonly page: Page) {}
 
   async goto(slug: string) {
@@ -14,10 +26,14 @@ export class TestPage {
   }
 
   getZoomedImage() {
-    return this.page.locator('.medium-zoom-image--opened')
+    return this.page.locator(TestPage.#zoomedImageSelector)
+  }
+
+  zoomImage(image: Locator) {
+    return TestPage.zoomImage(image)
   }
 
   closeZoomedImage() {
-    return this.page.locator('.medium-zoom-image--opened').click()
+    return this.page.locator(TestPage.#zoomedImageSelector).click()
   }
 }

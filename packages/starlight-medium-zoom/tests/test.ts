@@ -24,7 +24,7 @@ export const expect = baseExpect.extend({
     let imageAlt = await image.getAttribute('alt')
     imageAlt = imageAlt?.trim() ?? ''
 
-    await image.click()
+    await TestPage.zoomImage(image)
 
     try {
       // The overlay should be visible.
@@ -44,8 +44,6 @@ export const expect = baseExpect.extend({
       } else {
         // The caption should be the image's alt attribute.
         expected = imageAlt
-        const captionHandle = await captionLocator.elementHandle()
-        await captionHandle?.waitForElementState('stable')
         baseExpect(await captionLocator.textContent()).toBe(expected)
       }
 

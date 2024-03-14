@@ -42,7 +42,7 @@ for (const format of formats) {
     await testPage.goto(slug)
 
     const image = testPage.getNthImage(4)
-    await image.click()
+    await testPage.zoomImage(image)
 
     expect(await testPage.getZoomedImage().getAttribute('src')).toMatch(/-dark.png$/)
 
@@ -51,7 +51,7 @@ for (const format of formats) {
     await testPage.page.emulateMedia({ colorScheme: 'dark' })
     await testPage.page.reload()
 
-    await image.click()
+    await testPage.zoomImage(image)
 
     expect(await testPage.getZoomedImage().getAttribute('src')).toMatch(/-light.png$/)
   })
