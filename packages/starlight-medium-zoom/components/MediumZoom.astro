@@ -8,6 +8,7 @@
 <style is:global>
   :root {
     --smz-animation-duration: 300ms;
+    --smz-animation-duration-disabled: 1ms;
 
     --smz-z-index-overlay: 90;
     --smz-z-index-image: 91;
@@ -18,7 +19,7 @@
     inset: 0;
     opacity: 0;
     position: fixed;
-    transition: opacity var(--smz-animation-duration);
+    transition: opacity var(--smz-animation-duration-disabled);
     will-change: opacity;
     z-index: var(--smz-z-index-overlay);
   }
@@ -41,7 +42,14 @@
 
   .medium-zoom-image {
     cursor: zoom-in;
-    transition: transform var(--smz-animation-duration) cubic-bezier(0.2, 0, 0.2, 1);
+    transition: transform var(--smz-animation-duration-disabled) cubic-bezier(0.2, 0, 0.2, 1);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .medium-zoom-overlay,
+    .medium-zoom-image {
+      transition-duration: var(--smz-animation-duration);
+    }
   }
 </style>
 
@@ -55,13 +63,19 @@
     padding: var(--sl-nav-pad-y) var(--sl-nav-pad-x);
     position: fixed;
     right: 0;
-    transition: opacity var(--smz-animation-duration);
+    transition: opacity var(--smz-animation-duration-disabled);
     will-change: opacity;
     z-index: var(--smz-z-index-caption);
   }
 
   :global(.medium-zoom--opened) [data-smz-caption] {
     opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    [data-smz-caption] {
+      transition-duration: var(--smz-animation-duration);
+    }
   }
 </style>
 
