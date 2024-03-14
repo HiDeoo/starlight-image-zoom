@@ -33,16 +33,16 @@
     visibility: hidden;
   }
 
-  .medium-zoom-image--opened {
+  .medium-zoom-image {
+    cursor: zoom-in;
+    transition: transform var(--smz-animation-duration-disabled) cubic-bezier(0.2, 0, 0.2, 1);
+  }
+
+  .medium-zoom-image.medium-zoom-image--opened {
     cursor: zoom-out;
     position: relative;
     will-change: transform;
     z-index: var(--smz-z-index-image);
-  }
-
-  .medium-zoom-image {
-    cursor: zoom-in;
-    transition: transform var(--smz-animation-duration-disabled) cubic-bezier(0.2, 0, 0.2, 1);
   }
 
   @media (prefers-reduced-motion: no-preference) {
