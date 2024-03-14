@@ -1,6 +1,7 @@
 ---
 title: Shared syntax Markdown
 slug: tests/shared-syntax-md
+pagefind: false
 ---
 
 An image using Markdown syntax:

@@ -1,5 +1,6 @@
 ---
 title: CSS class not-content
+pagefind: false
 ---
 
 <h2>Heading</h2>
