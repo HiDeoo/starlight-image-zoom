@@ -68,6 +68,12 @@
     z-index: var(--smz-z-index-caption);
   }
 
+  @media (prefers-reduced-transparency) {
+    [data-smz-caption] {
+      background-color: var(--sl-color-bg-nav);
+    }
+  }
+
   :global(.medium-zoom--opened) [data-smz-caption] {
     opacity: 1;
   }
