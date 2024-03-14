@@ -68,7 +68,8 @@
   customElements.define(
     'starlight-medium-zoom',
     class StarlightMediumZoom extends HTMLElement {
-      #contentImageSelector = '.sl-markdown-content img:not([data-zoom-off]):not(:where(.not-content *))'
+      #contentImageSelector =
+        '.sl-markdown-content img:not([data-zoom-off]):not(:where(:is(.not-content, a[href], button) *))'
       #zoom?: import('medium-zoom').Zoom
 
       constructor() {

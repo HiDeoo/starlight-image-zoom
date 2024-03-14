@@ -42,6 +42,16 @@ test('does not zoom an image with the `zoom-off` data attribute', async ({ testP
   await expect(testPage.getZoomedImage()).not.toBeAttached()
 })
 
+test('does not zoom an SVG image inside an interactive element', async ({ testPage }) => {
+  await testPage.goto('zoom')
+
+  const linkImage = testPage.getNthImage(1)
+  await linkImage.click()
+
+  await expect(testPage.getZoomedImage()).not.toBeAttached()
+  expect(testPage.page.url()).toBe('https://astro.build/')
+})
+
 test('closes the zoomed image when using the `Tab` key', async ({ testPage }) => {
   await testPage.goto('zoom')
 
