@@ -1,5 +1,5 @@
 ---
-title: not-content class tests
+title: CSS class not-content
 ---
 
 <h2>Heading</h2>

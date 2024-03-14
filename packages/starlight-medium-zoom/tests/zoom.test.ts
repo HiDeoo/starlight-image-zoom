@@ -33,6 +33,15 @@ test('does not zoom an image inside a parent with the `not-content` CSS class', 
   await expect(testPage.getZoomedImage()).not.toBeAttached()
 })
 
+test('does not zoom an image with the `zoom-off` data attribute', async ({ testPage }) => {
+  await testPage.goto('zoom-off')
+
+  const zoomOffImage = testPage.getNthImage(1)
+  await zoomOffImage.click()
+
+  await expect(testPage.getZoomedImage()).not.toBeAttached()
+})
+
 test('closes the zoomed image when using the `Tab` key', async ({ testPage }) => {
   await testPage.goto('zoom')
 

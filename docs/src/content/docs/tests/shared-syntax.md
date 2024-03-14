@@ -1,5 +1,5 @@
 ---
-title: Shared syntax Markdown tests
+title: Shared syntax Markdown
 slug: tests/shared-syntax-md
 ---
 
