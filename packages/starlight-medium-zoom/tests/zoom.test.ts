@@ -15,6 +15,15 @@ test('does not zoom an SVG image from the `<Icon>` component', async ({ testPage
   await expect(testPage.getZoomedImage()).not.toBeAttached()
 })
 
+test('does not zoom an hero image', async ({ testPage }) => {
+  await testPage.goto('hero')
+
+  const heroImage = testPage.page.locator('.hero img')
+  await heroImage.click()
+
+  await expect(testPage.getZoomedImage()).not.toBeAttached()
+})
+
 test('closes the zoomed image when using the `Tab` key', async ({ testPage }) => {
   await testPage.goto('zoom')
 
