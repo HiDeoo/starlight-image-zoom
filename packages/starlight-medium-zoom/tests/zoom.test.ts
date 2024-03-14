@@ -24,6 +24,15 @@ test('does not zoom an hero image', async ({ testPage }) => {
   await expect(testPage.getZoomedImage()).not.toBeAttached()
 })
 
+test('does not zoom an image inside a parent with the `not-content` CSS class', async ({ testPage }) => {
+  await testPage.goto('not-content')
+
+  const notContentImage = testPage.getNthImage(1)
+  await notContentImage.click()
+
+  await expect(testPage.getZoomedImage()).not.toBeAttached()
+})
+
 test('closes the zoomed image when using the `Tab` key', async ({ testPage }) => {
   await testPage.goto('zoom')
 
