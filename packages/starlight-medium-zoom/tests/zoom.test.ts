@@ -9,7 +9,7 @@ test('zooms an SVG image', async ({ testPage }) => {
 test('does not zoom an SVG image from the `<Icon>` component', async ({ testPage }) => {
   await testPage.goto('zoom')
 
-  const svg = testPage.page.locator('.sl-markdown-content svg:nth-of-type(1)')
+  const svg = testPage.page.locator('.sl-markdown-content p + svg:nth-of-type(1)')
   await svg.click()
 
   await expect(testPage.getZoomedImage()).not.toBeAttached()
@@ -50,14 +50,4 @@ test('does not zoom an SVG image inside an interactive element', async ({ testPa
 
   await expect(testPage.getZoomedImage()).not.toBeAttached()
   expect(testPage.page.url()).toBe('https://astro.build/')
-})
-
-test('closes the zoomed image when using the `Tab` key', async ({ testPage }) => {
-  await testPage.goto('zoom')
-
-  await expect(testPage.getNthImage(0)).toBeZoomedAfterClick()
-
-  await testPage.page.keyboard.press('Tab')
-
-  await expect(testPage.getZoomedImage()).not.toBeAttached()
 })

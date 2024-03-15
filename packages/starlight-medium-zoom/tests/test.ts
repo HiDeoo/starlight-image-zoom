@@ -27,15 +27,17 @@ export const expect = baseExpect.extend({
     await TestPage.zoomImage(image)
 
     try {
-      // The overlay should be visible.
+      const dialog = page.locator('dialog.starlight-medium-zoom-dialog')
+
+      // The dialog should be visible.
       expected = 'visible'
-      await baseExpect(page.locator('.medium-zoom-overlay')).toBeVisible()
+      await baseExpect(dialog).toBeVisible()
 
       // The zoomed image should be visible.
       expected = 'visible'
-      await baseExpect(page.locator('.medium-zoom-image--opened')).toBeVisible()
+      await baseExpect(dialog.locator('.starlight-medium-zoom-image')).toBeVisible()
 
-      const captionLocator = page.locator('[data-smz-caption]')
+      const captionLocator = dialog.locator('figcaption')
 
       if (imageAlt.length === 0) {
         // If the image has no alt attribute, the caption should not be visible.

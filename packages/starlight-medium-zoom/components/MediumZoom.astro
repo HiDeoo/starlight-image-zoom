@@ -1,160 +1,391 @@
 <starlight-medium-zoom>
   <template>
-    <section></section>
-    <div data-smz-caption></div>
+    <dialog class="starlight-medium-zoom-dialog">
+      <button aria-label="Unzoom image" class="starlight-medium-zoom-control">
+        <svg aria-hidden="true" fill="currentColor" viewBox="0 0 24 24">
+          <use href="#starlight-medium-zoom-icon-unzoom"></use>
+        </svg>
+      </button>
+      <figure></figure>
+    </dialog>
   </template>
+  <svg xmlns="http://www.w3.org/2000/svg" style={{ display: 'none' }}>
+    <symbol id="starlight-medium-zoom-icon-zoom" viewBox="0 0 24 24">
+      <path
+        d="M9.79 12.79 4 18.59V17a1 1 0 0 0-2 0v4a1 1 0 0 0 .08.38 1 1 0 0 0 .54.54A1 1 0 0 0 3 22h4a1 1 0 0 0 0-2H5.41l5.8-5.79a1 1 0 0 0-1.42-1.42ZM21.92 2.62a1 1 0 0 0-.54-.54A1 1 0 0 0 21 2h-4a1 1 0 0 0 0 2h1.59l-5.8 5.79a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0L20 5.41V7a1 1 0 0 0 2 0V3a1 1 0 0 0-.08-.38Z"
+      >
+      </path>
+    </symbol>
+    <symbol id="starlight-medium-zoom-icon-unzoom" viewBox="0 0 24 24">
+      <path
+        d="M21.71 2.29a1 1 0 0 0-1.42 0l-5.79 5.8V6.5a1 1 0 0 0-2 0v4a1 1 0 0 0 .08.38 1 1 0 0 0 .54.54 1 1 0 0 0 .38.08h4a1 1 0 0 0 0-2h-1.59l5.8-5.79a1 1 0 0 0 0-1.42ZM10.88 12.58a1 1 0 0 0-.38-.08h-4a1 1 0 0 0 0 2h1.59l-5.8 5.79a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l5.79-5.8v1.59a1 1 0 0 0 2 0v-4a1 1 0 0 0-.08-.38 1 1 0 0 0-.54-.54Z"
+      >
+      </path>
+    </symbol>
+  </svg>
 </starlight-medium-zoom>
 
 <style is:global>
   :root {
-    --smz-animation-duration: 300ms;
-    --smz-animation-duration-disabled: 1ms;
-
-    --smz-z-index-overlay: 90;
-    --smz-z-index-image: 91;
-    --smz-z-index-caption: 92;
+    --starlight-medium-zoom-animation-duration: 300ms;
   }
 
-  .medium-zoom-overlay {
-    inset: 0;
-    opacity: 0;
-    position: fixed;
-    transition: opacity var(--smz-animation-duration-disabled);
-    will-change: opacity;
-    z-index: var(--smz-z-index-overlay);
+  body:has(dialog.starlight-medium-zoom-dialog[open]) {
+    overflow: hidden;
   }
 
-  .medium-zoom--opened .medium-zoom-overlay {
-    cursor: zoom-out;
-    opacity: 1;
+  starlight-medium-zoom-zoomable {
+    display: inline-block;
+    position: relative;
   }
 
-  .medium-zoom-image--hidden {
+  starlight-medium-zoom-zoomable img {
+    cursor: zoom-in;
+  }
+
+  starlight-medium-zoom-zoomable button {
+    cursor: zoom-in;
+  }
+
+  starlight-medium-zoom-zoomable button:not(:focus):not(:focus-within) {
+    border: none;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    white-space: nowrap;
+    width: 1px;
+  }
+
+  .starlight-medium-zoom-control {
+    background-color: var(--sl-color-bg-nav);
+    border: 2px solid var(--sl-color-gray-2);
+    border-radius: 50%;
+    display: grid;
+    height: 44px;
+    inset: 20px 20px auto auto;
+    padding: 10px;
+    place-items: center;
+    position: absolute;
+    width: 44px;
+  }
+
+  .starlight-medium-zoom-source {
     visibility: hidden;
   }
 
-  .medium-zoom-image {
-    cursor: zoom-in;
-    transition: transform var(--smz-animation-duration-disabled) cubic-bezier(0.2, 0, 0.2, 1);
-  }
-
-  .medium-zoom-image.medium-zoom-image--opened {
+  .starlight-medium-zoom-image {
     cursor: zoom-out;
-    position: relative;
-    will-change: transform;
-    z-index: var(--smz-z-index-image);
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    .medium-zoom-overlay,
-    .medium-zoom-image {
-      transition-duration: var(--smz-animation-duration);
+    .starlight-medium-zoom-image {
+      transition: transform var(--starlight-medium-zoom-animation-duration) cubic-bezier(0.4, 0, 0.2, 1);
     }
   }
 </style>
 
 <style>
-  [data-smz-caption] {
+  dialog {
+    background: transparent;
+    border: 0;
+    height: 100vh;
+    height: 100dvh;
+    margin: 0;
+    max-height: none;
+    max-width: none;
+    overflow: hidden;
+    padding: 0;
+    position: fixed;
+    width: 100vw;
+    width: 100dvw;
+  }
+
+  dialog::backdrop {
+    background: var(--sl-color-black);
+    opacity: 0;
+  }
+
+  :global(.starlight-medium-zoom-opened) dialog::backdrop {
+    opacity: 1;
+  }
+
+  figure {
+    cursor: zoom-out;
+    height: 100%;
+    position: relative;
+    width: 100%;
+  }
+
+  figure :global(figcaption) {
     background-color: color-mix(in srgb, var(--sl-color-bg-nav), transparent 10%);
     border-top: 1px solid var(--sl-color-hairline);
-    bottom: 0;
-    left: 0;
+    cursor: initial;
+    inset: auto 0 0 0;
     opacity: 0;
     padding: var(--sl-nav-pad-y) var(--sl-nav-pad-x);
-    position: fixed;
-    right: 0;
-    transition: opacity var(--smz-animation-duration-disabled);
-    will-change: opacity;
-    z-index: var(--smz-z-index-caption);
+    position: absolute;
   }
 
   @media (prefers-reduced-transparency) {
-    [data-smz-caption] {
+    figure :global(figcaption) {
       background-color: var(--sl-color-bg-nav);
     }
   }
 
-  :global(.medium-zoom--opened) [data-smz-caption] {
+  :global(.starlight-medium-zoom-opened) figure :global(figcaption) {
+    opacity: 1;
+  }
+
+  button {
+    cursor: zoom-out;
+    opacity: 0;
+    z-index: 1;
+  }
+
+  :global(.starlight-medium-zoom-opened) button {
     opacity: 1;
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    [data-smz-caption] {
-      transition-duration: var(--smz-animation-duration);
+    button,
+    dialog::backdrop,
+    figure :global(figcaption) {
+      transition: opacity var(--starlight-medium-zoom-animation-duration);
     }
   }
 </style>
 
 <script>
+  import { STARLIGHT_MEDIUM_ZOOM_ZOOMABLE_TAG } from '../libs/constants'
+
+  /**
+   * Based on:
+   * - https://github.com/francoischalifour/medium-zoom
+   * - https://github.com/rpearce/react-medium-image-zoom
+   */
   customElements.define(
     'starlight-medium-zoom',
     class StarlightMediumZoom extends HTMLElement {
-      #contentImageSelector =
-        '.sl-markdown-content img:not([data-zoom-off]):not(:where(:is(.not-content, a[href], button) *))'
-      #zoom?: import('medium-zoom').Zoom
+      #currentZoom?: CurrentZoom | undefined
+      #images: HTMLImageElement[] = []
+      #previousFocus?: Element | null | undefined
+      #template = this.querySelector('template')
+
+      #classList = {
+        image: 'starlight-medium-zoom-image',
+        opened: 'starlight-medium-zoom-opened',
+        source: 'starlight-medium-zoom-source',
+      }
 
       constructor() {
         super()
 
         window.addEventListener('DOMContentLoaded', () => {
-          const onIdle = window.requestIdleCallback || ((cb) => setTimeout(cb, 1))
+          // https://caniuse.com/requestidlecallback
+          const onIdle = window.requestIdleCallback ?? ((cb) => setTimeout(cb, 1))
 
-          onIdle(async () => {
-            const image = document.querySelector<HTMLDivElement>(this.#contentImageSelector)
-            if (!image) return
+          onIdle(() => {
+            const zoomables = [...document.querySelectorAll(STARLIGHT_MEDIUM_ZOOM_ZOOMABLE_TAG)]
+            if (zoomables.length === 0) return
 
-            const template = this.querySelector('template')
-            const templateSection = template?.content.querySelector('section')
-            if (!template || !templateSection) return
-
-            const { default: mediumZoom } = await import('medium-zoom/dist/pure')
-
-            this.#zoom = mediumZoom(this.#contentImageSelector, {
-              background: 'var(--sl-color-black)',
-              container: templateSection,
-              scrollOffset: 15,
-              template,
-            })
-
-            this.#zoom.on('open', this.#onOpen)
-            this.#zoom.on('close', this.#onClose)
+            this.#setupZoom(zoomables)
           })
         })
       }
 
-      #onOpen = (event: Event) => {
-        if (!(event.target instanceof HTMLImageElement)) return
+      #setupZoom(zoomables: Element[]) {
+        for (const zoomable of zoomables) {
+          const img = zoomable.querySelector('img')
+          if (!img) continue
 
-        this.#setCaption(event.target.alt)
+          this.#images.push(img)
 
-        document.addEventListener('keydown', this.#onKeyDown)
+          zoomable.querySelector('button')?.addEventListener('click', (event) => {
+            event.stopPropagation()
+            this.#open(img)
+          })
+        }
+
+        document.addEventListener('click', this.#onClick)
+        window.addEventListener('resize', this.#onResize)
       }
 
-      #onClose = () => {
-        document.removeEventListener('keydown', this.#onKeyDown)
+      #onClick = ({ target }: MouseEvent) => {
+        if (target instanceof HTMLElement && target.closest('figcaption')) return
+
+        if (this.#currentZoom) {
+          this.#close()
+          return
+        }
+
+        if (!(target instanceof HTMLImageElement)) return
+        if (!this.#images.includes(target)) return
+
+        this.#open(target)
       }
 
-      #onKeyDown = (event: KeyboardEvent) => {
-        if (event.key === 'Tab') {
-          event.preventDefault()
-          this.#zoom?.close()
+      #onResize = () => {
+        this.#close(true)
+      }
+
+      #onWheel = () => {
+        this.#close()
+      }
+
+      #onCancel = (event: Event) => {
+        event.preventDefault()
+        this.#close()
+      }
+
+      #open(image: HTMLImageElement) {
+        if (!this.#template || this.#currentZoom) return
+
+        // Save the current focused element to restore it later.
+        this.#previousFocus = document.activeElement
+
+        // Portal the dialog.
+        const portal = document.createElement('div')
+        portal.append(this.#template.content.cloneNode(true))
+
+        // Grab a reference to the dialog and the zoomed image figure.
+        const dialog = portal.querySelector('dialog')
+        const figure = dialog?.querySelector('figure')
+        if (!dialog || !figure) return
+
+        // Clone the image to zoom at the same position of the original image.
+        const zoomedImage = this.#cloneImageAtPosition(image)
+
+        // Apply CSS classes to hide the source image and transition the zoomed image.
+        image.classList.add(this.#classList.source)
+        zoomedImage.classList.add(this.#classList.image)
+
+        // Append the zoomed image to the dialog.
+        figure.append(zoomedImage)
+
+        // Set the caption.
+        this.#setCaption(image.getAttribute('alt'), figure)
+
+        // Render the portaled dialog.
+        document.body.append(portal)
+
+        // Open the dialog.
+        document.addEventListener('wheel', this.#onWheel, { once: true })
+        dialog.addEventListener('cancel', this.#onCancel)
+        dialog.showModal()
+
+        // Apply a zoom effect to the zoomed image.
+        zoomedImage.style.transform = this.#getZoomEffectTransform(image, figure)
+        document.body.classList.add(this.#classList.opened)
+
+        // Keep track of the current zoom.
+        this.#currentZoom = { dialog, image, zoomedImage }
+      }
+
+      #close(disableAnimation = false) {
+        if (!this.#currentZoom) return
+
+        const { zoomedImage } = this.#currentZoom
+
+        // Remove the zoom effect from the zoomed image.
+        zoomedImage.style.transform = ''
+        document.body.classList.remove(this.#classList.opened)
+
+        const { matches: prefersReducedMotion } = window.matchMedia('(prefers-reduced-motion: reduce)')
+
+        if (disableAnimation || prefersReducedMotion) {
+          this.#onUnzoomEnd()
+        } else {
+          zoomedImage.addEventListener('transitionend', this.#onUnzoomEnd, { once: true })
         }
       }
 
-      #setCaption(text: string) {
-        requestAnimationFrame(() => {
-          const footer = document.querySelector('[data-smz-caption]')
-          if (!footer) return
+      #onUnzoomEnd = () => {
+        if (!this.#currentZoom) return
 
-          text = text.trim()
+        const { dialog, image } = this.#currentZoom
 
-          if (text.length === 0) {
-            footer.remove()
-          } else {
-            footer.textContent = text
-          }
-        })
+        // Show the source image.
+        image.classList.remove(this.#classList.source)
+
+        // Remove the portaled dialog.
+        dialog.parentElement?.remove()
+
+        // Reset the current zoom.
+        this.#currentZoom = undefined
+
+        // Restore the focus.
+        if (this.#previousFocus instanceof HTMLElement) {
+          this.#previousFocus.focus()
+        }
+      }
+
+      #setCaption(text: string | null, figure: HTMLElement) {
+        text = text?.trim() ?? ''
+
+        if (text.length === 0) return
+
+        const caption = document.createElement('figcaption')
+        caption.ariaHidden = 'true'
+        caption.textContent = text
+
+        figure.append(caption)
+      }
+
+      #cloneImageAtPosition(image: HTMLImageElement) {
+        const { height, left, top, width } = image.getBoundingClientRect()
+
+        const clone = image.cloneNode(true) as HTMLImageElement
+        clone.removeAttribute('id')
+
+        clone.style.position = 'absolute'
+        clone.style.width = `${width}px`
+        clone.style.height = `${height}px`
+        clone.style.top = `${top}px`
+        clone.style.left = `${left}px`
+        clone.style.transform = ''
+
+        // If the image is inside a `<picture>` element, we need to update the `src` attribute and use the correct
+        // source.
+        if (image.parentElement?.tagName === 'PICTURE' && image.currentSrc) {
+          clone.src = image.currentSrc
+        }
+
+        return clone
+      }
+
+      #getZoomEffectTransform(image: HTMLImageElement, figure: HTMLElement) {
+        const isSVG = this.#isSVGImage(image)
+
+        const imageRect = image.getBoundingClientRect()
+        const figureRect = figure.getBoundingClientRect()
+
+        // Zoom SVGs at the figure's size, not the image's size.
+        const zoomedHeight = isSVG ? figureRect.height : image.naturalHeight
+        const zoomedWidth = isSVG ? figureRect.width : image.naturalWidth
+
+        // Finds out the scale so that the zoomed image fits within the figure element.
+        const scaleX = Math.min(Math.max(imageRect.width, zoomedWidth), figureRect.width) / imageRect.width
+        const scaleY = Math.min(Math.max(imageRect.height, zoomedHeight), figureRect.height) / imageRect.height
+        const scale = Math.min(scaleX, scaleY)
+
+        // Calculate the translation to center the zoomed image within the figure element.
+        const translateX = (-imageRect.left + (figureRect.width - imageRect.width) / 2 + figureRect.left) / scale
+        const translateY = (-imageRect.top + (figureRect.height - imageRect.height) / 2 + figureRect.top) / scale
+
+        return `scale(${scale}) translate3d(${translateX}px, ${translateY}px, 0)`
+      }
+
+      #isSVGImage(image: HTMLImageElement) {
+        return image.currentSrc.toLowerCase().endsWith('.svg')
       }
     },
   )
+
+  interface CurrentZoom {
+    dialog: HTMLDialogElement
+    image: HTMLImageElement
+    zoomedImage: HTMLImageElement
+  }
 </script>

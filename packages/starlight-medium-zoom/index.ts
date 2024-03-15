@@ -1,10 +1,12 @@
 import type { StarlightPlugin, StarlightUserConfig } from '@astrojs/starlight/types'
 
+import { starlightMediumZoomIntegration } from './libs/integration'
+
 export default function starlightMediumZoomPlugin(): StarlightPlugin {
   return {
     name: 'starlight-medium-zoom-plugin',
     hooks: {
-      setup({ config, logger, updateConfig }) {
+      setup({ addIntegration, config, logger, updateConfig }) {
         const updatedConfig: Partial<StarlightUserConfig> = { components: { ...config.components } }
 
         if (!updatedConfig.components) {
@@ -22,6 +24,7 @@ export default function starlightMediumZoomPlugin(): StarlightPlugin {
           updatedConfig.components.MarkdownContent = 'starlight-medium-zoom/overrides/MarkdownContent.astro'
         }
 
+        addIntegration(starlightMediumZoomIntegration())
         updateConfig(updatedConfig)
       },
     },
