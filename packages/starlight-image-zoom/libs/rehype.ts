@@ -3,12 +3,12 @@ import type { Root } from 'hast'
 import { CONTINUE, EXIT, SKIP, visit } from 'unist-util-visit'
 import { visitParents } from 'unist-util-visit-parents'
 
-import { STARLIGHT_MEDIUM_ZOOM_ZOOMABLE_TAG } from './constants'
+import { STARLIGHT_IMAGE_ZOOM_ZOOMABLE_TAG } from './constants'
 
 const elementTagNames = new Set(['img', 'picture'])
 const mdxJsxFlowElementNames = new Set(['img', 'picture', 'astro-image', 'Image', 'Picture'])
 
-export function rehypeStarlightMediumZoom() {
+export function rehypeStarlightImageZoom() {
   return function transformer(tree: Root) {
     visitParents(tree, ['element', 'mdxJsxFlowElement'], (node, parents) => {
       if (node.type !== 'element' && node.type !== 'mdxJsxFlowElement') return CONTINUE
@@ -58,7 +58,7 @@ export function rehypeStarlightMediumZoom() {
 
       parent.children[index] = {
         type: 'element',
-        tagName: STARLIGHT_MEDIUM_ZOOM_ZOOMABLE_TAG,
+        tagName: STARLIGHT_IMAGE_ZOOM_ZOOMABLE_TAG,
         properties: {},
         children: [
           node,
@@ -67,7 +67,7 @@ export function rehypeStarlightMediumZoom() {
             tagName: 'button',
             properties: {
               'aria-label': `Zoom image${alt.length > 0 ? `: ${alt}` : ''}`,
-              class: 'starlight-medium-zoom-control',
+              class: 'starlight-image-zoom-control',
             },
             children: [
               {
@@ -83,7 +83,7 @@ export function rehypeStarlightMediumZoom() {
                     type: 'element',
                     tagName: 'use',
                     properties: {
-                      href: '#starlight-medium-zoom-icon-zoom',
+                      href: '#starlight-image-zoom-icon-zoom',
                     },
                     children: [],
                   },

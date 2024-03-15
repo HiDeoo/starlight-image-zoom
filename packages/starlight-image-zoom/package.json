@@ -1,5 +1,5 @@
 {
-  "name": "starlight-medium-zoom",
+  "name": "starlight-image-zoom",
   "version": "0.0.1",
   "license": "MIT",
   "description": "// TODO(HiDeoo) ",
@@ -7,7 +7,7 @@
   "type": "module",
   "exports": {
     ".": "./index.ts",
-    "./components/MediumZoom.astro": "./components/MediumZoom.astro",
+    "./components/ImageZoom.astro": "./components/ImageZoom.astro",
     "./overrides/MarkdownContent.astro": "./overrides/MarkdownContent.astro",
     "./package.json": "./package.json"
   },
@@ -16,7 +16,6 @@
     "lint": "prettier -c --cache . && eslint . --cache --max-warnings=0"
   },
   "dependencies": {
-    "medium-zoom": "1.1.0",
     "rehype-raw": "7.0.0",
     "unist-util-visit": "5.0.0",
     "unist-util-visit-parents": "6.0.1"
@@ -42,10 +41,10 @@
   "keywords": [
     "// TODO(HiDeoo) "
   ],
-  "homepage": "https://github.com/HiDeoo/starlight-medium-zoom",
+  "homepage": "https://github.com/HiDeoo/starlight-image-zoom",
   "repository": {
     "type": "git",
-    "url": "https://github.com/HiDeoo/starlight-medium-zoom.git"
+    "url": "https://github.com/HiDeoo/starlight-image-zoom.git"
   },
-  "bugs": "https://github.com/HiDeoo/starlight-medium-zoom/issues"
+  "bugs": "https://github.com/HiDeoo/starlight-image-zoom/issues"
 }

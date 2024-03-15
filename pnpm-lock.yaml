@@ -47,15 +47,12 @@ importers:
       sharp:
         specifier: 0.33.2
         version: 0.33.2
-      starlight-medium-zoom:
+      starlight-image-zoom:
         specifier: workspace:*
-        version: link:../packages/starlight-medium-zoom
+        version: link:../packages/starlight-image-zoom
 
-  packages/starlight-medium-zoom:
+  packages/starlight-image-zoom:
     dependencies:
-      medium-zoom:
-        specifier: 1.1.0
-        version: 1.1.0
       rehype-raw:
         specifier: 7.0.0
         version: 7.0.0
@@ -4082,10 +4079,6 @@ packages:
     resolution: {integrity: sha512-0H44vDimn51F0YwvxSJSm0eCDOJTRlmN0R1yBh4HLj9wiV1Dn0QoXGbvFAWj2hSItVTlCmBF1hqKlIyUBVFLPg==}
     dependencies:
       '@types/mdast': 4.0.3
-
-  /medium-zoom@1.1.0:
-    resolution: {integrity: sha512-ewyDsp7k4InCUp3jRmwHBRFGyjBimKps/AJLjRSox+2q/2H4p/PNpQf+pwONWlJiOudkBXtbdmVbFjqyybfTmQ==}
-    dev: false
 
   /merge-stream@2.0.0:
     resolution: {integrity: sha512-abv/qOcuPfk3URPfDzmZU1LKmuw8kT+0nIHvKrKgFrwifol/doWcdA4ZqsWQ8ENrFKkd67Mfpo/LovbIUsbt3w==}

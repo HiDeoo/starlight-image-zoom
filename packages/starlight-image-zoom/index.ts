@@ -1,10 +1,10 @@
 import type { StarlightPlugin, StarlightUserConfig } from '@astrojs/starlight/types'
 
-import { starlightMediumZoomIntegration } from './libs/integration'
+import { starlightImageZoomIntegration } from './libs/integration'
 
-export default function starlightMediumZoomPlugin(): StarlightPlugin {
+export default function starlightImageZoomPlugin(): StarlightPlugin {
   return {
-    name: 'starlight-medium-zoom-plugin',
+    name: 'starlight-image-zoom-plugin',
     hooks: {
       setup({ addIntegration, config, logger, updateConfig }) {
         const updatedConfig: Partial<StarlightUserConfig> = { components: { ...config.components } }
@@ -18,13 +18,13 @@ export default function starlightMediumZoomPlugin(): StarlightPlugin {
             'It looks like you already have a `MarkdownContent` component override in your Starlight configuration.',
           )
           logger.warn(
-            'To use `starlight-medium-zoom`, either remove the override or manually render `starlight-medium-zoom/components/MediumZoom.astro`.',
+            'To use `starlight-image-zoom`, either remove the override or manually render `starlight-image-zoom/components/ImageZoom.astro`.',
           )
         } else {
-          updatedConfig.components.MarkdownContent = 'starlight-medium-zoom/overrides/MarkdownContent.astro'
+          updatedConfig.components.MarkdownContent = 'starlight-image-zoom/overrides/MarkdownContent.astro'
         }
 
-        addIntegration(starlightMediumZoomIntegration())
+        addIntegration(starlightImageZoomIntegration())
         updateConfig(updatedConfig)
       },
     },

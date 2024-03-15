@@ -27,7 +27,7 @@ export const expect = baseExpect.extend({
     await TestPage.zoomImage(image)
 
     try {
-      const dialog = page.locator('dialog.starlight-medium-zoom-dialog')
+      const dialog = page.locator('dialog.starlight-image-zoom-dialog')
 
       // The dialog should be visible.
       expected = 'visible'
@@ -35,7 +35,7 @@ export const expect = baseExpect.extend({
 
       // The zoomed image should be visible.
       expected = 'visible'
-      await baseExpect(dialog.locator('.starlight-medium-zoom-image')).toBeVisible()
+      await baseExpect(dialog.locator('.starlight-image-zoom-image')).toBeVisible()
 
       const captionLocator = dialog.locator('figcaption')
 

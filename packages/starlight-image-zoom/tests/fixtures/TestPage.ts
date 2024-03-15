@@ -1,7 +1,7 @@
 import type { Locator, Page } from '@playwright/test'
 
 export class TestPage {
-  static #zoomedImageSelector = '.starlight-medium-zoom-image'
+  static #zoomedImageSelector = '.starlight-image-zoom-image'
 
   static async zoomImage(image: Locator) {
     await image.click()

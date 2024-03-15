@@ -1,5 +1,5 @@
 {
-  "name": "starlight-medium-zoom-monorepo",
+  "name": "starlight-image-zoom-monorepo",
   "version": "0.0.1",
   "license": "MIT",
   "description": "// TODO(HiDeoo) ",
@@ -30,12 +30,12 @@
   "keywords": [
     "// TODO(HiDeoo) "
   ],
-  "homepage": "https://github.com/HiDeoo/starlight-medium-zoom",
+  "homepage": "https://github.com/HiDeoo/starlight-image-zoom",
   "repository": {
     "type": "git",
-    "url": "https://github.com/HiDeoo/starlight-medium-zoom.git"
+    "url": "https://github.com/HiDeoo/starlight-image-zoom.git"
   },
-  "bugs": "https://github.com/HiDeoo/starlight-medium-zoom/issues",
+  "bugs": "https://github.com/HiDeoo/starlight-image-zoom/issues",
   "lint-staged": {
     "*": [
       "prettier -w -u --cache",

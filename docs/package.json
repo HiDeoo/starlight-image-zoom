@@ -1,5 +1,5 @@
 {
-  "name": "starlight-medium-zoom-docs",
+  "name": "starlight-image-zoom-docs",
   "version": "0.0.1",
   "license": "MIT",
   "description": "// TODO(HiDeoo) ",
@@ -15,7 +15,7 @@
     "@astrojs/starlight": "0.21.1",
     "astro": "4.5.1",
     "sharp": "0.33.2",
-    "starlight-medium-zoom": "workspace:*"
+    "starlight-image-zoom": "workspace:*"
   },
   "engines": {
     "node": ">=18"
@@ -26,10 +26,10 @@
   "keywords": [
     "// TODO(HiDeoo) "
   ],
-  "homepage": "https://github.com/HiDeoo/starlight-medium-zoom",
+  "homepage": "https://github.com/HiDeoo/starlight-image-zoom",
   "repository": {
     "type": "git",
-    "url": "https://github.com/HiDeoo/starlight-medium-zoom.git"
+    "url": "https://github.com/HiDeoo/starlight-image-zoom.git"
   },
-  "bugs": "https://github.com/HiDeoo/starlight-medium-zoom/issues"
+  "bugs": "https://github.com/HiDeoo/starlight-image-zoom/issues"
 }

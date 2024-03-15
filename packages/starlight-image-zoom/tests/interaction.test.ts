@@ -39,5 +39,5 @@ test('removes the dialog after unzooming an image', async ({ testPage }) => {
   // Click the button to unzoom the image.
   await testPage.page.locator('*:focus').click()
 
-  await expect(testPage.page.locator('dialog.starlight-medium-zoom-dialog')).not.toBeAttached()
+  await expect(testPage.page.locator('dialog.starlight-image-zoom-dialog')).not.toBeAttached()
 })
