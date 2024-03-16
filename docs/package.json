@@ -2,7 +2,7 @@
   "name": "starlight-image-zoom-docs",
   "version": "0.0.1",
   "license": "MIT",
-  "description": "// TODO(HiDeoo) ",
+  "description": "Starlight plugin adding zoom capabilities to your documentation images.",
   "author": "HiDeoo <github@hideoo.dev> (https://hideoo.dev)",
   "type": "module",
   "scripts": {
@@ -25,7 +25,11 @@
   "private": true,
   "sideEffects": false,
   "keywords": [
-    "// TODO(HiDeoo) "
+    "starlight",
+    "image",
+    "zoom",
+    "documentation",
+    "image-zoom"
   ],
   "homepage": "https://github.com/HiDeoo/starlight-image-zoom",
   "repository": {
