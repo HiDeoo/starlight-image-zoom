@@ -1,0 +1,52 @@
+---
+title: Getting Started
+description: Learn how to add zoom capabilities to your documentation images with the Starlight Image Zoom plugin.
+---
+
+A [Starlight](https://starlight.astro.build) plugin adding zoom capabilities to your documentation images.
+
+- Lightweight UI based on the [`<dialog>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog) element
+- No client-side third-party dependencies
+- Markdown and MDX images support: Markdown syntax, HTML syntax, and the `<Image>` or `<Picture>` components
+- Alternate text displayed as a caption
+- Accessible buttons to trigger zoom
+
+Check out the [demo](/demo/) for a preview of the plugin in action.
+
+## Prerequisites
+
+You will need to have a Starlight website set up.
+If you don't have one yet, you can follow the ["Getting Started"](https://starlight.astro.build/getting-started) guide in the Starlight docs to create one.
+
+## Installation
+
+import { Steps } from '@astrojs/starlight/components'
+import { PackageManagers } from 'starlight-package-managers'
+
+<Steps>
+
+1. Starlight Image Zoom is a Starlight [plugin](https://starlight.astro.build/reference/plugins/) that you can install using your favorite package manager:
+
+   <PackageManagers pkg="starlight-image-zoom" />
+
+2. Configure the plugin in your Starlight [configuration](https://starlight.astro.build/reference/configuration/#plugins) in the `astro.config.mjs` file.
+
+   ```diff lang="js"
+   // astro.config.mjs
+   import starlight from '@astrojs/starlight'
+   import { defineConfig } from 'astro/config'
+   +import starlightImageZoom from 'starlight-image-zoom'
+
+   export default defineConfig({
+     integrations: [
+       starlight({
+   +      plugins: [starlightImageZoom()],
+         title: 'My Docs',
+       }),
+     ],
+   })
+   ```
+
+3. [Start the development server](https://starlight.astro.build/getting-started/#start-the-development-server) to see the plugin in action.
+
+</Steps>

@@ -1,0 +1,30 @@
+---
+interface Props {
+  id: string
+  name: string
+  username: string
+}
+
+const { id, name, username } = Astro.props
+---
+
+<p>
+  Photo by <a
+    href={`https://unsplash.com/@${username}?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash`}
+  >
+    {name}
+  </a> on <a
+    href={`https://unsplash.com/photos/${id}?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash`}
+  >
+    Unsplash
+  </a>
+</p>
+
+<style>
+  p {
+    border: 1px solid var(--sl-color-gray-5);
+    padding: 0.5rem;
+    background-color: var(--sl-color-gray-6);
+    font-size: var(--sl-text-xs);
+  }
+</style>

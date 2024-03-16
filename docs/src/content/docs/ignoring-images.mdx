@@ -1,0 +1,41 @@
+---
+title: Ignoring Images
+description: Learn how to ignore images from being zoomable when using the Starlight Image Zoom plugin.
+---
+
+By default, all images in your documentation content are zoomable when using the Starlight Image Zoom plugin with a few exceptions.
+
+## Exceptions
+
+The following images are ignored by the Starlight Image Zoom plugin:
+
+- Icons rendered using the Starlight [`<Icon>`](https://starlight.astro.build/guides/components/#icon) component
+- Images embedded in interactive elements such as buttons, links, etc.
+- Images embedded in elements with the [`not-content`](https://starlight.astro.build/guides/components/#compatibility-with-starlights-styles) CSS class
+
+## Ignoring specific images
+
+The Starlight Image Zoom plugin will ignore images with the `data-zoom-off` attribute. You can add this attribute to any image to prevent it from being zoomable.
+
+```mdx "data-zoom-off"
+---
+// src/content/docs/example.mdx
+title: My page title
+---
+
+import { Image } from 'astro:assets'
+import algorithm from '../../assets/demo/algorithm.jpg'
+
+<Image src={algorithm} alt="A book with a diagram on it" data-zoom-off />
+```
+
+The code above generates the following image on the page, which is not zoomable:
+
+import { Image } from 'astro:assets'
+import algorithm from '../../assets/demo/algorithm.jpg'
+
+<Image src={algorithm} alt="A book with a diagram on it" data-zoom-off />
+
+import ImageAttribution from '../../components/ImageAttribution.astro'
+
+<ImageAttribution id="a-book-with-a-diagram-on-it-nuz3rK5iiKg" name="Андрей Сизов" username="alpridephoto" />

@@ -1,0 +1,13 @@
+---
+title: Data attribute zoom-off
+pagefind: false
+---
+
+<img src="https://astro.build/assets/press/astro-logo-light-gradient.png" alt="Astro logo" />
+
+<img src="https://astro.build/assets/press/astro-logo-light-gradient.png" alt="Astro logo" data-zoom-off />
+
+import { Image, Picture } from 'astro:assets'
+import starlightLight from '../../../assets/tests/starlight-light.png'
+
+<Image src={starlightLight} alt="Starlight logo" data-zoom-off />

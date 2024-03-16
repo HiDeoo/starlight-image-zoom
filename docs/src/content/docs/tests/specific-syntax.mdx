@@ -1,0 +1,16 @@
+---
+title: Specific syntax MDX
+slug: tests/specific-syntax-mdx
+pagefind: false
+---
+
+import { Image, Picture } from 'astro:assets'
+import starlightLight from '../../../assets/tests/starlight-light.png'
+
+An image using the `<Image>` component:
+
+<Image src={starlightLight} alt="Starlight logo" />
+
+An image using the `<Picture>` component:
+
+<Picture src={starlightLight} alt="Starlight logo" />

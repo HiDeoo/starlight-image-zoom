@@ -1,0 +1,43 @@
+---
+title: Starlight Image Zoom
+description: Starlight plugin adding zoom capabilities to your documentation images.
+head:
+  - tag: title
+    content: Starlight Image Zoom
+template: splash
+editUrl: false
+lastUpdated: false
+hero:
+  tagline: Starlight plugin adding zoom capabilities to your documentation images.
+  image:
+    html: '🕵️'
+  actions:
+    - text: Getting Started
+      link: /getting-started/
+      icon: rocket
+      variant: primary
+    - text: Demo
+      link: /demo
+      icon: external
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components'
+
+## Next steps
+
+<CardGrid stagger>
+  <Card title="Install the plugin" icon="puzzle">
+    Check the [getting started guide](/getting-started/) for installation instructions.
+  </Card>
+  <Card title="Zoom images" icon="magnifier">
+    Test the plugin with the image below or check the [demo page](/demo) for more examples.
+  </Card>
+</CardGrid>
+
+import { Image } from 'astro:assets'
+import ImageAttribution from '../../components/ImageAttribution.astro'
+import bridge from '../../assets/demo/bridge.jpg'
+
+<Image src={bridge} alt="Man standing alone on hanging bridge" />
+
+<ImageAttribution id="man-standing-alone-on-hanging-bridge-fadJ-bbc8Oo" name="Jonathan Klok" username="mostly_brave" />
