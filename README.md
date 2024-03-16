@@ -1,1 +1,1 @@
-packages/starlight-medium-zoom/README.md
+packages/starlight-image-zoom/README.md
