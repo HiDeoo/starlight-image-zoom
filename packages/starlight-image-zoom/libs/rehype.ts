@@ -16,7 +16,15 @@ export function rehypeStarlightImageZoom() {
       if (node.type === 'mdxJsxFlowElement' && node.name && !mdxJsxFlowElementNames.has(node.name)) return CONTINUE
 
       // Skip images with the `data-zoom-off` attribute.
-      if (node.type === 'element' && 'dataZoomOff' in node.properties) return SKIP
+      if (
+        (node.type === 'element' && 'dataZoomOff' in node.properties) ||
+        (node.type === 'mdxJsxFlowElement' &&
+          node.attributes.some(
+            (attribute) => attribute.type === 'mdxJsxAttribute' && attribute.name === 'data-zoom-off',
+          ))
+      ) {
+        return SKIP
+      }
 
       const isInvalidImage = parents.some((parent) => {
         return (

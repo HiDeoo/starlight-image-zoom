@@ -42,6 +42,17 @@ test('does not zoom an image with the `zoom-off` data attribute', async ({ testP
   await expect(testPage.getZoomedImage()).not.toBeAttached()
 })
 
+test('does not zoom an image using the `<Image>` component with the `zoom-off` data attribute', async ({
+  testPage,
+}) => {
+  await testPage.goto('zoom-off')
+
+  const zoomOffImage = testPage.getNthImage(2)
+  await zoomOffImage.click()
+
+  await expect(testPage.getZoomedImage()).not.toBeAttached()
+})
+
 test('does not zoom an SVG image inside an interactive element', async ({ testPage }) => {
   await testPage.goto('zoom')
 
