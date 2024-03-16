@@ -15,7 +15,8 @@
     "@astrojs/starlight": "0.21.1",
     "astro": "4.5.1",
     "sharp": "0.33.2",
-    "starlight-image-zoom": "workspace:*"
+    "starlight-image-zoom": "workspace:*",
+    "starlight-package-managers": "0.4.0"
   },
   "engines": {
     "node": ">=18"

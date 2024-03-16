@@ -1,0 +1,11 @@
+.hero-html {
+  --size: 12rem;
+
+  font-size: var(--size);
+  justify-content: center;
+  line-height: var(--size);
+}
+
+h2 + div.card-grid.stagger {
+  margin-bottom: 2rem;
+}

@@ -50,6 +50,9 @@ importers:
       starlight-image-zoom:
         specifier: workspace:*
         version: link:../packages/starlight-image-zoom
+      starlight-package-managers:
+        specifier: 0.4.0
+        version: 0.4.0(@astrojs/starlight@0.21.1)(astro@4.5.1)
 
   packages/starlight-image-zoom:
     dependencies:
@@ -5505,6 +5508,17 @@ packages:
 
   /sprintf-js@1.0.3:
     resolution: {integrity: sha512-D9cPgkvLlV3t3IzL0D0YLvGA9Ahk4PcvVwUbN0dSGr1aP0Nrt4AEnTUbuGvquEC0mA64Gqt1fzirlRs5ibXx8g==}
+
+  /starlight-package-managers@0.4.0(@astrojs/starlight@0.21.1)(astro@4.5.1):
+    resolution: {integrity: sha512-eeLizI7a33bm/10GvOlcaxdGXLsGKtaDmLHOAxN73W1IrwoLefbj2H9ty0Fsh9fyEl3fNZFD725dMnwuXjuoKQ==}
+    engines: {node: '>=18.14.1'}
+    peerDependencies:
+      '@astrojs/starlight': '>=0.21.0'
+      astro: '>=4.2.7'
+    dependencies:
+      '@astrojs/starlight': 0.21.1(astro@4.5.1)
+      astro: 4.5.1(typescript@5.4.2)
+    dev: false
 
   /stdin-discarder@0.1.0:
     resolution: {integrity: sha512-xhV7w8S+bUwlPTb4bAOUQhv8/cSS5offJuX8GQGq32ONF0ZtDWKfkdomM3HMRA+LhX6um/FZ0COqlwsjD53LeQ==}
