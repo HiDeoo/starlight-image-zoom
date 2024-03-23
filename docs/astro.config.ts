@@ -16,6 +16,7 @@ export default defineConfig({
           items: [
             { label: 'Getting Started', link: '/getting-started/' },
             { label: 'Ignoring Images', link: '/ignoring-images/' },
+            { label: 'Customization', link: '/customization/' },
           ],
         },
         { label: 'Demo', link: '/demo/' },

@@ -1,0 +1,25 @@
+---
+title: Customization
+description: Learn how to customize the appearance of zoomed images.
+---
+
+Zoomed images are displayed in a modal [`<dialog>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog) which includes a backdrop displayed behind the image.
+
+## Customizing the backdrop
+
+By default, the backdrop background color is an non-transparent color based on Starlight's color palette.
+You can customize this color using the `--starlight-image-zoom-backdrop-bg` CSS custom property.
+
+To learn how to add custom CSS styles to Starlight, refer to the [“Custom CSS styles”](https://starlight.astro.build/guides/css-and-tailwind/#custom-css-styles) guide in the Starlight documentation.
+
+```css
+:root {
+  /* Custom backdrop background color in dark mode. */
+  --starlight-image-zoom-backdrop-bg: oklch(0 0 0);
+}
+
+:root[data-theme='light'] {
+  /* Custom backdrop background color in light mode. */
+  --starlight-image-zoom-backdrop-bg: oklch(100% 0 0);
+}
+```
