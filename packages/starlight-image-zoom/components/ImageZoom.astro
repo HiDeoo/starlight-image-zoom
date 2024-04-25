@@ -178,11 +178,12 @@
         opened: 'starlight-image-zoom-opened',
         source: 'starlight-image-zoom-source',
       }
+      static #initialized = false
 
       constructor() {
         super()
 
-        window.addEventListener('DOMContentLoaded', () => {
+        const initialize = () => {
           // https://caniuse.com/requestidlecallback
           const onIdle = window.requestIdleCallback ?? ((cb) => setTimeout(cb, 1))
 
@@ -191,8 +192,20 @@
             if (zoomables.length === 0) return
 
             this.#setupZoom(zoomables)
+            document.addEventListener('click', this.#onClick)
+            window.addEventListener('resize', this.#onResize)
           })
-        })
+        }
+        window.addEventListener('DOMContentLoaded', initialize, { once: true })
+        document.addEventListener(
+          'astro:after-preparation',
+          () => {
+            document.removeEventListener('click', this.#onClick)
+            window.removeEventListener('resize', this.#onResize)
+          },
+          { once: true },
+        )
+        StarlightImageZoom.#initialized ||= document.addEventListener('astro:after-swap', initialize) === undefined
       }
 
       #setupZoom(zoomables: Element[]) {
@@ -207,9 +220,6 @@
             this.#open(img)
           })
         }
-
-        document.addEventListener('click', this.#onClick)
-        window.addEventListener('resize', this.#onResize)
       }
 
       #onClick = ({ target }: MouseEvent) => {
@@ -284,6 +294,8 @@
       }
 
       #close(disableAnimation = false) {
+        window.removeEventListener('wheel', this.#onWheel)
+
         if (!this.#currentZoom) return
 
         const { zoomedImage } = this.#currentZoom
