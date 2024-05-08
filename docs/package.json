@@ -7,6 +7,7 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
+    "dev:no-caption": "astro dev --config astro.no-caption.config.ts",
     "build": "astro build",
     "preview": "astro preview",
     "lint": "prettier -c --cache . && eslint . --cache --max-warnings=0"
