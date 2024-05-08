@@ -38,8 +38,10 @@ export const expect = baseExpect.extend({
       await baseExpect(dialog.locator('.starlight-image-zoom-image')).toBeVisible()
 
       const captionLocator = dialog.locator('figcaption')
+      // eslint-disable-next-line unicorn/prefer-dom-node-dataset
+      const noCaption = await page.locator('starlight-image-zoom').getAttribute('data-hide-caption')
 
-      if (imageAlt.length === 0) {
+      if (imageAlt.length === 0 || noCaption !== null) {
         // If the image has no alt attribute, the caption should not be visible.
         expected = 'hidden'
         await baseExpect(captionLocator).not.toBeAttached()

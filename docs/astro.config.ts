@@ -15,6 +15,12 @@ export default defineConfig({
           label: 'Start Here',
           items: [
             { label: 'Getting Started', link: '/getting-started/' },
+            { label: 'Configuration', link: '/configuration/' },
+          ],
+        },
+        {
+          label: 'Guides',
+          items: [
             { label: 'Ignoring Images', link: '/ignoring-images/' },
             { label: 'Customization', link: '/customization/' },
           ],

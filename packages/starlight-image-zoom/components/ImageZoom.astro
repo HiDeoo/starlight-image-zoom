@@ -1,4 +1,8 @@
-<starlight-image-zoom>
+---
+import config from 'virtual:starlight-image-zoom-config'
+---
+
+<starlight-image-zoom data-hide-caption={!config.showCaptions}>
   <template>
     <dialog class="starlight-image-zoom-dialog">
       <button aria-label="Unzoom image" class="starlight-image-zoom-control">
@@ -334,6 +338,8 @@
       }
 
       #setCaption(text: string | null, figure: HTMLElement) {
+        if (Object.hasOwn(this.dataset, 'hideCaption')) return
+
         text = text?.trim() ?? ''
 
         if (text.length === 0) return

@@ -15,8 +15,8 @@ export class TestPage {
 
   constructor(public readonly page: Page) {}
 
-  async goto(slug: string) {
-    await this.page.goto(`/tests/${slug.replace(/^\//, '')}`)
+  async goto(slug: string, noCaption = false) {
+    await this.page.goto(`http://localhost:${noCaption ? '4322/no-caption' : '4321'}/tests/${slug.replace(/^\//, '')}`)
     await this.page.waitForLoadState('networkidle')
   }
 

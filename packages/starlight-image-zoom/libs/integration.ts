@@ -1,9 +1,12 @@
 import type { AstroIntegration } from 'astro'
 import rehypeRaw from 'rehype-raw'
 
-import { rehypeStarlightImageZoom } from './rehype'
+import type { StarlightImageZoomConfig } from '..'
 
-export function starlightImageZoomIntegration(): AstroIntegration {
+import { rehypeStarlightImageZoom } from './rehype'
+import { vitePluginStarlightImageZoomConfig } from './vite'
+
+export function starlightImageZoomIntegration(config: StarlightImageZoomConfig): AstroIntegration {
   return {
     name: 'starlight-image-zoom-integration',
     hooks: {
@@ -11,6 +14,9 @@ export function starlightImageZoomIntegration(): AstroIntegration {
         updateConfig({
           markdown: {
             rehypePlugins: [rehypeRaw, rehypeStarlightImageZoom],
+          },
+          vite: {
+            plugins: [vitePluginStarlightImageZoomConfig(config)],
           },
         })
       },

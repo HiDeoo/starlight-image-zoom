@@ -8,15 +8,18 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'], headless: true },
     },
   ],
-  use: {
-    baseURL: 'http://localhost:4321',
-  },
   webServer: [
     {
       command: 'pnpm run dev',
       cwd: '../../docs',
       reuseExistingServer: !process.env['CI'],
       url: 'http://localhost:4321',
+    },
+    {
+      command: 'pnpm run dev:no-caption',
+      cwd: '../../docs',
+      reuseExistingServer: !process.env['CI'],
+      url: 'http://localhost:4322/no-caption/',
     },
   ],
 })
