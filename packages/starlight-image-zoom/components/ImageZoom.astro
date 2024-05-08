@@ -338,7 +338,7 @@ import config from 'virtual:starlight-image-zoom-config'
       }
 
       #setCaption(text: string | null, figure: HTMLElement) {
-        if (this.hasAttribute('data-hide-caption')) return
+        if (Object.hasOwn(this.dataset, 'hideCaption')) return
 
         text = text?.trim() ?? ''
 
