@@ -106,3 +106,26 @@ export function rehypeStarlightImageZoom() {
     })
   }
 }
+
+/**
+ * rehype-raw strips the `meta` property from code blocks so we manually moved it to a `metastring` property which is
+ * supported by expressive-code.
+ *
+ * @see https://github.com/syntax-tree/hast-util-raw/issues/13
+ * @see https://github.com/expressive-code/expressive-code/blob/21fdaa441c89d6a6ac38f5d522b6b60741df2f5d/packages/rehype-expressive-code/src/utils.ts#L15
+ */
+export function rehypeMetaString() {
+  return function (tree: Root) {
+    visit(tree, ['element'], (node) => {
+      if (node.type === 'element' && node.tagName === 'code' && node.data?.meta) {
+        node.properties['metastring'] = node.data.meta
+      }
+    })
+  }
+}
+
+declare module 'hast' {
+  interface Data {
+    meta?: string
+  }
+}
