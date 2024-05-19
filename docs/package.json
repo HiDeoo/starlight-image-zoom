@@ -13,8 +13,8 @@
     "lint": "prettier -c --cache . && eslint . --cache --max-warnings=0"
   },
   "dependencies": {
-    "@astrojs/starlight": "0.21.1",
-    "astro": "4.5.1",
+    "@astrojs/starlight": "0.23.1",
+    "astro": "4.8.6",
     "sharp": "0.33.2",
     "starlight-image-zoom": "workspace:*",
     "starlight-package-managers": "0.4.0"
