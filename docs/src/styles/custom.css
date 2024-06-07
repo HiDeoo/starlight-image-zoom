@@ -1,3 +1,7 @@
+body {
+  overflow-y: scroll; 
+}
+
 .hero-html {
   --size: 12rem;
 
