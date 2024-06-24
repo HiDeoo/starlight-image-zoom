@@ -34,10 +34,6 @@ import config from 'virtual:starlight-image-zoom-config'
     --starlight-image-zoom-animation-duration: 300ms;
   }
 
-  body:has(dialog.starlight-image-zoom-dialog[open]) {
-    overflow: hidden;
-  }
-
   starlight-image-zoom-zoomable {
     display: inline-block;
     position: relative;
@@ -268,6 +264,17 @@ import config from 'virtual:starlight-image-zoom-config'
         const figure = dialog?.querySelector('figure')
         if (!dialog || !figure) return
 
+        // Track some body style properties that will be overridden to prevent layout shifts.
+        const body: CurrentZoom['body'] = { overflow: document.body.style.overflow, width: document.body.style.width }
+
+        // Disable body scrolling and override some styles to prevent layout shifts.
+        const clientWidth = document.body.clientWidth
+        document.body.style.overflow = 'hidden'
+        document.body.style.width = `${clientWidth}px`
+        document
+          .querySelector('header')
+          ?.style.setProperty('padding-inline-end', `calc(var(--sl-nav-pad-x) + ${window.innerWidth - clientWidth}px)`)
+
         // Clone the image to zoom at the same position of the original image.
         const zoomedImage = this.#cloneImageAtPosition(image)
 
@@ -293,8 +300,7 @@ import config from 'virtual:starlight-image-zoom-config'
         zoomedImage.style.transform = this.#getZoomEffectTransform(image, figure)
         document.body.classList.add(this.#classList.opened)
 
-        // Keep track of the current zoom.
-        this.#currentZoom = { dialog, image, zoomedImage }
+        this.#currentZoom = { body, dialog, image, zoomedImage }
       }
 
       #close(disableAnimation = false) {
@@ -327,6 +333,11 @@ import config from 'virtual:starlight-image-zoom-config'
 
         // Remove the portaled dialog.
         dialog.parentElement?.remove()
+
+        // Restore some overridden styles.
+        document.body.style.overflow = this.#currentZoom.body.overflow
+        document.body.style.width = this.#currentZoom.body.width
+        document.querySelector('header')?.style.setProperty('padding-inline-end', 'var(--sl-nav-pad-x)')
 
         // Reset the current zoom.
         this.#currentZoom = undefined
@@ -402,6 +413,7 @@ import config from 'virtual:starlight-image-zoom-config'
   )
 
   interface CurrentZoom {
+    body: { overflow: string; width: string }
     dialog: HTMLDialogElement
     image: HTMLImageElement
     zoomedImage: HTMLImageElement
