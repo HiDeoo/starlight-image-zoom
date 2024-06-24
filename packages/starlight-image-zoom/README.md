@@ -15,7 +15,7 @@
 
 ## Getting Started
 
-Want to get started immediately? Check out the [getting started guide](https://starlight-image-zoom.vercel.app/getting-started/).
+Want to get started immediately? Check out the [getting started guide](https://starlight-image-zoom.vercel.app/getting-started/) or check out the [demo](https://starlight-image-zoom.vercel.app/demo/) to see the plugin in action.
 
 ## Features
 

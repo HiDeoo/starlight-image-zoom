@@ -25,6 +25,13 @@ export default defineConfig({
             { label: 'Customization', link: '/customization/' },
           ],
         },
+        {
+          label: 'Resources',
+          items: [
+            { label: 'Showcase', link: '/resources/showcase/' },
+            { label: 'Plugins and Tools', link: '/resources/starlight/' },
+          ],
+        },
         { label: 'Demo', link: '/demo/' },
       ],
       social: {
