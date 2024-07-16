@@ -37,6 +37,7 @@ import config from 'virtual:starlight-image-zoom-config'
   starlight-image-zoom-zoomable {
     display: inline-block;
     position: relative;
+    width: 100%;
   }
 
   starlight-image-zoom-zoomable img {
@@ -64,11 +65,16 @@ import config from 'virtual:starlight-image-zoom-config'
     border-radius: 50%;
     display: grid;
     height: 44px;
-    inset: 20px 20px auto auto;
+    inset: 20px auto auto 20px;
+    margin-top: 0 !important;
     padding: 10px;
     place-items: center;
     position: absolute;
     width: 44px;
+  }
+
+  .starlight-image-zoom-opened .starlight-image-zoom-control {
+    inset: 20px 20px auto auto;
   }
 
   .starlight-image-zoom-source {

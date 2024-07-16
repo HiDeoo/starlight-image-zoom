@@ -41,7 +41,7 @@ for (const format of formats) {
     await testPage.page.emulateMedia({ colorScheme: 'light' })
     await testPage.goto(slug)
 
-    const image = testPage.getNthImage(4)
+    const image = testPage.getNthImage(5)
     await testPage.zoomImage(image)
 
     expect(await testPage.getZoomedImage().getAttribute('src')).toMatch(/-dark.png$/)
@@ -54,5 +54,14 @@ for (const format of formats) {
     await testPage.zoomImage(image)
 
     expect(await testPage.getZoomedImage().getAttribute('src')).toMatch(/-light.png$/)
+  })
+
+  test(`${format}: displays remote SVGs with no explicit width`, async ({ testPage }) => {
+    await testPage.goto(slug)
+
+    const image = testPage.getNthImage(3)
+    const boundingBox = await image.boundingBox()
+
+    expect(boundingBox?.width).not.toBe(0)
   })
 }

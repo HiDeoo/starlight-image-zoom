@@ -16,6 +16,10 @@ An image using Markdown syntax with no alt text:
 
 ![](../../../assets/tests/starlight-light.png)
 
+A remote SVG image with no explicit width using Markdown syntax:
+
+![D2 diagram](https://d2.atlas.lucas.tools/?script=KkktLuECBAAA__8%3D&)
+
 An image using HTML syntax with the `img` tag:
 
 <img src="https://astro.build/assets/press/astro-logo-light-gradient.png" alt="Astro logo" />
