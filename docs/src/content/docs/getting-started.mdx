@@ -52,3 +52,22 @@ import { PackageManagers } from '@hideoo/starlight-plugins-docs-components'
 </Steps>
 
 The Starlight Image Zoom plugin behavior can be tweaked using various [configuration options](/configuration).
+
+## Component overrides
+
+The Starlight Image Zoom plugin uses a Starlight [component override](https://starlight.astro.build/guides/overriding-components/) for the [`MarkdownContent`](https://starlight.astro.build/reference/overrides/#markdowncontent) component to add zoom capabilities to images.
+
+If you have a custom `MarkdownContent` component override in your Starlight project, you will need to manually render the `ImageZoom` component from the Starlight Image Zoom plugin in your custom component:
+
+```diff lang="astro"
+---
+// src/components/overrides/MarkdownContent.astro
+import type { Props } from '@astrojs/starlight/props'
+import Default from '@astrojs/starlight/components/MarkdownContent.astro'
++import ImageZoom from 'starlight-image-zoom/components/ImageZoom.astro'
+---
+
++<ImageZoom />
+<p>Custom content in the MarkdownContent override</p>
+<Default {...Astro.props}><slot /></Default>
+```
