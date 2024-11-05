@@ -73,7 +73,7 @@ import config from 'virtual:starlight-image-zoom-config'
     width: 44px;
   }
 
-  .starlight-image-zoom-opened .starlight-image-zoom-control {
+  :is(.starlight-image-zoom-opened, .starlight-image-zoom-transition) .starlight-image-zoom-control {
     inset: 20px 20px auto auto;
   }
 
@@ -166,6 +166,9 @@ import config from 'virtual:starlight-image-zoom-config'
 <script>
   import { STARLIGHT_IMAGE_ZOOM_ZOOMABLE_TAG } from '../libs/constants'
 
+  // https://caniuse.com/requestidlecallback
+  const onIdle = window.requestIdleCallback ?? ((cb) => setTimeout(cb, 1))
+
   /**
    * Based on:
    * - https://github.com/francoischalifour/medium-zoom
@@ -183,16 +186,16 @@ import config from 'virtual:starlight-image-zoom-config'
         image: 'starlight-image-zoom-image',
         opened: 'starlight-image-zoom-opened',
         source: 'starlight-image-zoom-source',
+        transition: 'starlight-image-zoom-transition',
       }
+      #dataZoomTransformKey = 'zoomTransform'
+
       static #initialized = false
 
       constructor() {
         super()
 
         const initialize = () => {
-          // https://caniuse.com/requestidlecallback
-          const onIdle = window.requestIdleCallback ?? ((cb) => setTimeout(cb, 1))
-
           onIdle(() => {
             const zoomables = [...document.querySelectorAll(STARLIGHT_IMAGE_ZOOM_ZOOMABLE_TAG)]
             if (zoomables.length === 0) return
@@ -281,8 +284,8 @@ import config from 'virtual:starlight-image-zoom-config'
           .querySelector('header')
           ?.style.setProperty('padding-inline-end', `calc(var(--sl-nav-pad-x) + ${window.innerWidth - clientWidth}px)`)
 
-        // Clone the image to zoom at the same position of the original image.
-        const zoomedImage = this.#cloneImageAtPosition(image)
+        // Clone the image and apply a zoom effect to it.
+        const zoomedImage = this.#cloneAndZoomImage(image)
 
         // Apply CSS classes to hide the source image and transition the zoomed image.
         image.classList.add(this.#classList.source)
@@ -302,9 +305,11 @@ import config from 'virtual:starlight-image-zoom-config'
         dialog.addEventListener('cancel', this.#onCancel)
         dialog.showModal()
 
-        // Apply a zoom effect to the zoomed image.
-        zoomedImage.style.transform = this.#getZoomEffectTransform(image, figure)
-        document.body.classList.add(this.#classList.opened)
+        // Apply a zoom effect to zoom the image in.
+        onIdle(() => {
+          zoomedImage.style.transform = ''
+          document.body.classList.add(this.#classList.opened)
+        })
 
         this.#currentZoom = { body, dialog, image, zoomedImage }
       }
@@ -317,7 +322,8 @@ import config from 'virtual:starlight-image-zoom-config'
         const { zoomedImage } = this.#currentZoom
 
         // Remove the zoom effect from the zoomed image.
-        zoomedImage.style.transform = ''
+        zoomedImage.style.transform = zoomedImage.dataset[this.#dataZoomTransformKey] ?? ''
+        document.body.classList.add(this.#classList.transition)
         document.body.classList.remove(this.#classList.opened)
 
         const { matches: prefersReducedMotion } = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -335,6 +341,7 @@ import config from 'virtual:starlight-image-zoom-config'
         const { dialog, image } = this.#currentZoom
 
         // Show the source image.
+        document.body.classList.remove(this.#classList.transition)
         image.classList.remove(this.#classList.source)
 
         // Remove the portaled dialog.
@@ -368,8 +375,22 @@ import config from 'virtual:starlight-image-zoom-config'
         figure.append(caption)
       }
 
-      #cloneImageAtPosition(image: HTMLImageElement) {
-        const { height, left, top, width } = image.getBoundingClientRect()
+      #cloneAndZoomImage(image: HTMLImageElement) {
+        const imageRect = image.getBoundingClientRect()
+
+        // Zoom SVGs at the figure's size, not the image's size.
+        const isSVG = this.#isSVGImage(image)
+        const naturalWidth = isSVG ? window.innerWidth : image.naturalWidth
+        const naturalHeight = isSVG ? window.innerHeight : image.naturalHeight
+
+        const maxWidth = Math.min(window.innerWidth, naturalWidth)
+        const maxHeight = Math.min(window.innerHeight, naturalHeight)
+        const scale = Math.min(maxWidth / naturalWidth, maxHeight / naturalHeight)
+
+        const width = (isSVG ? window.innerWidth : image.naturalWidth) * scale
+        const height = (isSVG ? window.innerHeight : image.naturalHeight) * scale
+        const top = (window.innerHeight - height) / 2
+        const left = (window.innerWidth - width) / 2
 
         const clone = image.cloneNode(true) as HTMLImageElement
         clone.removeAttribute('id')
@@ -381,6 +402,20 @@ import config from 'virtual:starlight-image-zoom-config'
         clone.style.left = `${left}px`
         clone.style.transform = ''
 
+        // Finds out the scale transformations so that the zoomed image fits within the image rect.
+        const scaleX = imageRect.width / width
+        const scaleY = imageRect.height / height
+
+        // Calculate the translation to align the zoomed image within the image rect.
+        const translateX = (-left + (imageRect.width - width) / 2 + imageRect.left) / scaleX
+        const translateY = (-top + (imageRect.height - height) / 2 + imageRect.top) / scaleY
+
+        // Apply the scale and translation to the zoomed image.
+        clone.style.transform = `scale(${scaleX}, ${scaleY}) translate3d(${translateX}px, ${translateY}px, 0)`
+
+        // Save the transform to a data attribute to be able to animate it back to the original position.
+        clone.dataset[this.#dataZoomTransformKey] = clone.style.transform
+
         // If the image is inside a `<picture>` element, we need to update the `src` attribute and use the correct
         // source.
         if (image.parentElement?.tagName === 'PICTURE' && image.currentSrc) {
@@ -388,28 +423,6 @@ import config from 'virtual:starlight-image-zoom-config'
         }
 
         return clone
-      }
-
-      #getZoomEffectTransform(image: HTMLImageElement, figure: HTMLElement) {
-        const isSVG = this.#isSVGImage(image)
-
-        const imageRect = image.getBoundingClientRect()
-        const figureRect = figure.getBoundingClientRect()
-
-        // Zoom SVGs at the figure's size, not the image's size.
-        const zoomedHeight = isSVG ? figureRect.height : image.naturalHeight
-        const zoomedWidth = isSVG ? figureRect.width : image.naturalWidth
-
-        // Finds out the scale so that the zoomed image fits within the figure element.
-        const scaleX = Math.min(Math.max(imageRect.width, zoomedWidth), figureRect.width) / imageRect.width
-        const scaleY = Math.min(Math.max(imageRect.height, zoomedHeight), figureRect.height) / imageRect.height
-        const scale = Math.min(scaleX, scaleY)
-
-        // Calculate the translation to center the zoomed image within the figure element.
-        const translateX = (-imageRect.left + (figureRect.width - imageRect.width) / 2 + figureRect.left) / scale
-        const translateY = (-imageRect.top + (figureRect.height - imageRect.height) / 2 + figureRect.top) / scale
-
-        return `scale(${scale}) translate3d(${translateX}px, ${translateY}px, 0)`
       }
 
       #isSVGImage(image: HTMLImageElement) {
