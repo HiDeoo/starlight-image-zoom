@@ -10,6 +10,7 @@ export default defineConfig({
       title: 'Starlight Image Zoom No Caption Example',
     }),
   ],
+  outDir: './dist-no-caption',
   server: {
     port: 4322,
   },

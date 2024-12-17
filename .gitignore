@@ -19,6 +19,7 @@
 build
 coverage
 dist
+dist-no-caption
 dist-ssr
 lerna-debug.log*
 logs

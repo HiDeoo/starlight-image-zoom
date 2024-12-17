@@ -1,8 +1,11 @@
 ---
 import config from 'virtual:starlight-image-zoom-config'
+
+const dataAttributes: DOMStringMap = {}
+if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
 ---
 
-<starlight-image-zoom data-hide-caption={!config.showCaptions}>
+<starlight-image-zoom {...dataAttributes}>
   <template>
     <dialog class="starlight-image-zoom-dialog">
       <button aria-label="Unzoom image" class="starlight-image-zoom-control">
@@ -167,7 +170,7 @@ import config from 'virtual:starlight-image-zoom-config'
   import { STARLIGHT_IMAGE_ZOOM_ZOOMABLE_TAG } from '../libs/constants'
 
   // https://caniuse.com/requestidlecallback
-  const onIdle = window.requestIdleCallback ?? ((cb) => setTimeout(cb, 1))
+  const onIdle = globalThis.requestIdleCallback ?? ((cb) => setTimeout(cb, 1))
 
   /**
    * Based on:
@@ -205,7 +208,7 @@ import config from 'virtual:starlight-image-zoom-config'
             window.addEventListener('resize', this.#onResize)
           })
         }
-        window.addEventListener('DOMContentLoaded', initialize, { once: true })
+        globalThis.addEventListener('DOMContentLoaded', initialize, { once: true })
         document.addEventListener(
           'astro:after-preparation',
           () => {
@@ -326,7 +329,7 @@ import config from 'virtual:starlight-image-zoom-config'
         document.body.classList.add(this.#classList.transition)
         document.body.classList.remove(this.#classList.opened)
 
-        const { matches: prefersReducedMotion } = window.matchMedia('(prefers-reduced-motion: reduce)')
+        const { matches: prefersReducedMotion } = globalThis.matchMedia('(prefers-reduced-motion: reduce)')
 
         if (disableAnimation || prefersReducedMotion) {
           this.#onUnzoomEnd()
