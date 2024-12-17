@@ -10,13 +10,13 @@ export default defineConfig({
   ],
   webServer: [
     {
-      command: 'pnpm run dev',
+      command: 'pnpm build && pnpm preview',
       cwd: '../../docs',
       reuseExistingServer: !process.env['CI'],
       url: 'http://localhost:4321',
     },
     {
-      command: 'pnpm run dev:no-caption',
+      command: 'pnpm build:no-caption && pnpm preview:no-caption',
       cwd: '../../docs',
       reuseExistingServer: !process.env['CI'],
       url: 'http://localhost:4322/no-caption/',
