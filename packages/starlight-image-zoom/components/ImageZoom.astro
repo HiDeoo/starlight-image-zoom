@@ -429,7 +429,15 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
       }
 
       #isSVGImage(image: HTMLImageElement) {
-        return image.currentSrc.toLowerCase().endsWith('.svg')
+        if (image.currentSrc.toLowerCase().endsWith('.svg')) return true
+        try {
+          const url = new URL(image.currentSrc)
+          if (url.pathname !== '/_image') return false
+          const href = url.searchParams.get('href')
+          return href?.includes('origFormat=svg')
+        } catch {
+          return false
+        }
       }
     },
   )
