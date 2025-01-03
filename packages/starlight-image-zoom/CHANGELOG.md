@@ -1,5 +1,11 @@
 # starlight-image-zoom
 
+## 0.10.1
+
+### Patch Changes
+
+- [#30](https://github.com/HiDeoo/starlight-image-zoom/pull/30) [`98ae50e`](https://github.com/HiDeoo/starlight-image-zoom/commit/98ae50e5c4d9102991f146570a76844e816602ed) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Fixes an issue where SVG images were not being properly identified as SVGs when running in development mode.
+
 ## 0.10.0
 
 ### Minor Changes
