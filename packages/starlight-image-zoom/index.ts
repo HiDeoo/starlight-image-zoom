@@ -29,7 +29,7 @@ export default function starlightImageZoomPlugin(userConfig?: StarlightImageZoom
   return {
     name: 'starlight-image-zoom-plugin',
     hooks: {
-      setup({ addIntegration, config, updateConfig }) {
+      'config:setup'({ addIntegration, config, updateConfig }) {
         const updatedConfig: Partial<StarlightUserConfig> = { components: { ...config.components } }
 
         if (!updatedConfig.components) {

@@ -7,6 +7,11 @@ The following examples showcase the Starlight Image Zoom plugin in action.
 
 ## Markdown
 
+import { Preview } from '@hideoo/starlight-plugins-docs-components'
+import ImageAttribution from '../../components/ImageAttribution.astro'
+
+<Preview>
+
 ```md
 ---
 // src/content/docs/example.md
@@ -16,15 +21,22 @@ title: My page title
 ![Ceramic mug on table](../../assets/mug.jpg)
 ```
 
-The code above generates the following image on the page.
+<Fragment slot="preview">
 
 ![Ceramic mug on table](../../assets/demo/mug.jpg)
 
-import ImageAttribution from '../../components/ImageAttribution.astro'
-
 <ImageAttribution id="ceramic-mug-on-table-OmOvMdiaZZ0" name="Robert Shunev" username="rshunev" />
 
+</Fragment>
+
+</Preview>
+
 ## `<Image />`
+
+import { Image } from 'astro:assets'
+import paper from '../../assets/demo/paper.jpg'
+
+<Preview>
 
 ```mdx
 ---
@@ -38,14 +50,22 @@ import paper from '../../assets/paper.jpg'
 <Image src={paper} alt="Brown pencil on white printing paper" />
 ```
 
-import { Image } from 'astro:assets'
-import paper from '../../assets/demo/paper.jpg'
+<Fragment slot="preview">
 
 <Image src={paper} alt="Brown pencil on white printing paper" />
 
 <ImageAttribution id="brown-pencil-on-white-printing-paper-fteR0e2BzKo" name="Sven Mieke" username="sxoxm" />
 
+</Fragment>
+
+</Preview>
+
 ## `<Picture />`
+
+import { Picture } from 'astro:assets'
+import blackboard from '../../assets/demo/blackboard.jpg'
+
+<Preview>
 
 ```mdx
 ---
@@ -59,8 +79,7 @@ import blackboard from '../../assets/blackboard.jpg'
 <Picture src={blackboard} formats={['avif', 'webp']} alt="A blackboard with a bunch of diagrams on it" />
 ```
 
-import { Picture } from 'astro:assets'
-import blackboard from '../../assets/demo/blackboard.jpg'
+<Fragment slot="preview">
 
 <Picture src={blackboard} formats={['avif', 'webp']} alt="A blackboard with a bunch of diagrams on it" />
 
@@ -69,3 +88,7 @@ import blackboard from '../../assets/demo/blackboard.jpg'
   name="Dan Cristian Pădureț"
   username="dancristianpaduret"
 />
+
+</Fragment>
+
+</Preview>

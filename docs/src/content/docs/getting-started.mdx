@@ -62,12 +62,11 @@ If you have a custom `MarkdownContent` component override in your Starlight proj
 ```diff lang="astro"
 ---
 // src/components/overrides/MarkdownContent.astro
-import type { Props } from '@astrojs/starlight/props'
 import Default from '@astrojs/starlight/components/MarkdownContent.astro'
 +import ImageZoom from 'starlight-image-zoom/components/ImageZoom.astro'
 ---
 
 +<ImageZoom />
 <p>Custom content in the MarkdownContent override</p>
-<Default {...Astro.props}><slot /></Default>
+<Default><slot /></Default>
 ```
