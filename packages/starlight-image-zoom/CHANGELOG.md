@@ -1,5 +1,11 @@
 # starlight-image-zoom
 
+## 0.11.1
+
+### Patch Changes
+
+- [#34](https://github.com/HiDeoo/starlight-image-zoom/pull/34) [`58dcce6`](https://github.com/HiDeoo/starlight-image-zoom/commit/58dcce681f52f0001c18adba15b4cb086cd14eb5) Thanks [@DaniFoldi](https://github.com/DaniFoldi)! - Moves `mdast-util-mdx-jsx` package to non-dev dependencies to prevent issues in monorepos with hoisting disabled.
+
 ## 0.11.0
 
 ### Minor Changes
