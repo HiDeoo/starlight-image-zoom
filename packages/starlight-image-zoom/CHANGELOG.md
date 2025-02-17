@@ -1,5 +1,17 @@
 # starlight-image-zoom
 
+## 0.11.0
+
+### Minor Changes
+
+- [#32](https://github.com/HiDeoo/starlight-image-zoom/pull/32) [`02a52df`](https://github.com/HiDeoo/starlight-image-zoom/commit/02a52df958e0bf814f9e51e92d4ed0ce46dff53a) Thanks [@HiDeoo](https://github.com/HiDeoo)! - ⚠️ **BREAKING CHANGE:** The minimum supported version of Starlight is now version `0.32.0`.
+
+  Please use the `@astrojs/upgrade` command to upgrade your project:
+
+  ```sh
+  npx @astrojs/upgrade
+  ```
+
 ## 0.10.1
 
 ### Patch Changes
