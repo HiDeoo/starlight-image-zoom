@@ -29,16 +29,22 @@ To learn how to add custom CSS styles to Starlight, refer to the [“Custom CSS 
 By default, the backdrop filter is disabled.
 However, you can customize it using the `--starlight-image-zoom-backdrop-filter` CSS custom property.
 
+:::note
+You need to disable the backdrop background color in order to see the filter.
+:::
+
 To learn how to add custom CSS styles to Starlight, refer to the [“Custom CSS styles”](https://starlight.astro.build/guides/css-and-tailwind/#custom-css-styles) guide in the Starlight documentation.
 
 ```css
 :root {
   /* Custom backdrop filter in dark mode. */
+  --starlight-image-zoom-backdrop-bg: none; /* You need to disable the backdrop background color in order to see the filter. */
   --starlight-image-zoom-backdrop-filter: blur(10px);
 }
 
 :root[data-theme='light'] {
   /* Custom backdrop filter in light mode. */
+  --starlight-image-zoom-backdrop-bg: none; /* You need to disable the backdrop background color in order to see the filter. */
   --starlight-image-zoom-backdrop-filter: blur(10px);
 }
 ```
