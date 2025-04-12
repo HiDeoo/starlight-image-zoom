@@ -425,6 +425,12 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
           clone.src = image.currentSrc
         }
 
+        // If the image has an `id` attribute, set it on a data attribute on the zoomed image in case it's used by the
+        // user.
+        if (image.id) {
+          clone.dataset['zoomId'] = image.id
+        }
+
         return clone
       }
 

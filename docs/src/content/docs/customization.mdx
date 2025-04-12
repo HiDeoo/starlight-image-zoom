@@ -23,3 +23,25 @@ To learn how to add custom CSS styles to Starlight, refer to the [“Custom CSS 
   --starlight-image-zoom-backdrop-bg: oklch(100% 0 0);
 }
 ```
+
+## Customizing zoomed images using IDs
+
+When zooming images, the `id` attribute of the image is not copied to the zoomed image in the modal.
+If you are using the `id` attribute to identify images and customize their appearance using CSS, you can use the `data-zoom-id` attribute which will contain the `id` of the original image.
+
+For example, if your page includes Mermaid diagrams with IDs like `mermaid-1`, `mermaid-2`, etc., the following CSS snippet inverts the color samples of all the diagrams in dark mode:
+
+```css
+:root[data-theme='dark'] img[id^='mermaid-'] {
+  filter: invert(1);
+}
+```
+
+To apply the same effect to the zoomed images, you can use the `data-zoom-id` attribute in your CSS selector:
+
+```css
+:root[data-theme='dark'] img[id^='mermaid-'],
+:root[data-theme='dark'] img[data-zoom-id^='mermaid-'] {
+  filter: invert(1);
+}
+```
