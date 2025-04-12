@@ -62,3 +62,27 @@ test('does not zoom an SVG image inside an interactive element', async ({ testPa
   await expect(testPage.getZoomedImage()).not.toBeAttached()
   expect(testPage.page.url()).toBe('https://astro.build/')
 })
+
+test('does not set an ID on the zoomed image', async ({ testPage }) => {
+  await testPage.goto('data-zoom-id')
+
+  const imageWithNoId = testPage.getNthImage(0)
+  await imageWithNoId.click()
+
+  const zoomedImage = testPage.getZoomedImage()
+
+  expect(await zoomedImage.getAttribute('id')).toBe(null)
+  expect(await zoomedImage.getAttribute('data-zoom-id')).toBe(null)
+})
+
+test('preserves image ID in the `data-zoom-id` attribute', async ({ testPage }) => {
+  await testPage.goto('data-zoom-id')
+
+  const imageWithId = testPage.getNthImage(1)
+  await imageWithId.click()
+
+  const zoomedImage = testPage.getZoomedImage()
+
+  expect(await zoomedImage.getAttribute('id')).toBe(null)
+  expect(await zoomedImage.getAttribute('data-zoom-id')).toBe('astro-logo')
+})
