@@ -1,5 +1,13 @@
 # starlight-image-zoom
 
+## 0.12.0
+
+### Minor Changes
+
+- [#39](https://github.com/HiDeoo/starlight-image-zoom/pull/39) [`837e543`](https://github.com/HiDeoo/starlight-image-zoom/commit/837e5430e971345b1d6c737657d607dbef73948b) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Adds a new `data-zoom-id` attribute to zoomed images matching the `id` of the original image if it exists.
+
+  This can be useful if you are relying on the `id` attribute to customize the appearance of images using CSS and also want to apply the same styles to zoomed images.
+
 ## 0.11.1
 
 ### Patch Changes
