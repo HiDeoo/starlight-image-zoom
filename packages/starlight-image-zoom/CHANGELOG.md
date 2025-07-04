@@ -1,5 +1,13 @@
 # starlight-image-zoom
 
+## 0.13.0
+
+### Minor Changes
+
+- [#44](https://github.com/HiDeoo/starlight-image-zoom/pull/44) [`eba0382`](https://github.com/HiDeoo/starlight-image-zoom/commit/eba038299673d22a8ddd9c6d091a58e338e4104d) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Adds a new `<Zoom>` component to wrap images or SVG components and make them zoomable.
+
+  This can be useful for advanced use cases where the plugin cannot automatically apply zoom functionality, such as rendering images in a loop of an Astro component or using SVG components. Learn more in the [“Zoom component”](https://starlight-image-zoom.vercel.app/components/zoom/) guide.
+
 ## 0.12.0
 
 ### Minor Changes
