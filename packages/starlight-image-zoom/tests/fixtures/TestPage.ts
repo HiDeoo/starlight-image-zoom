@@ -22,7 +22,7 @@ export class TestPage {
 
   getNthImage(n: number) {
     // Note that `getByRole('img')` cannot be used as images with no alt attribute would not be found.
-    return this.page.locator('.sl-markdown-content img').locator(`nth=${n}`)
+    return this.page.locator('.sl-markdown-content :is(img, svg):not(:where(button *))').nth(n)
   }
 
   getZoomedImage() {

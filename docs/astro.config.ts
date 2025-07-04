@@ -22,6 +22,7 @@ export default defineConfig({
           label: 'Guides',
           items: [
             { label: 'Ignoring Images', link: '/ignoring-images/' },
+            { label: 'Zoom component', link: '/components/zoom/' },
             { label: 'Customization', link: '/customization/' },
           ],
         },

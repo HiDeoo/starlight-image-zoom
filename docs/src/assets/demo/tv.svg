@@ -1,0 +1,18 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 3000" width="2923" height="2923">
+	<title>A black and white drawing of a TV</title>
+	<style>
+		.s0 { fill: none;stroke: #000000;stroke-miterlimit:10;stroke-width: 57 }
+		[data-theme="dark"] .s0 { stroke: #ffffff; }
+	</style>
+	<g id="Layer 1">
+		<g id="Layer 1">
+		</g>
+	</g>
+	<path id="Shape 1" fill-rule="evenodd" class="s0" d="m570 794l15.7 1063.3 181.2 87.7 1491.3-35.1 215.8-92.4-9.4-884.8-160.7-127.5-1634.7-62.2z"/>
+	<path id="Shape 2" fill-rule="evenodd" class="s0" d="m772.2 902.9l-9.7 872.2z"/>
+	<path id="Shape 3" fill-rule="evenodd" class="s0" d="m762.5 1775.1l1470.6-42.9z"/>
+	<path id="Shape 4" fill-rule="evenodd" class="s0" d="m2233.1 1732.2l-30.7-782.2z"/>
+	<path id="Shape 5" fill-rule="evenodd" class="s0" d="m2202.4 950l-1437.2-44.9z"/>
+	<path id="Shape 6" fill-rule="evenodd" class="s0" d="m1118 1949.8l9.5 133.9-170.1 81.3-237.8-31.9 67.7-180.1"/>
+	<path id="Shape 7" fill-rule="evenodd" class="s0" d="m1975.8 1895.6l51.9 173.7 185.9 57.4 155.9-30.2-94.5-220"/>
+</svg>

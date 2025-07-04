@@ -5,3 +5,11 @@ test('does not add a caption if the `showCaptions` option is disabled', async ({
 
   await expect(testPage.getNthImage(0)).toBeZoomedAfterClick()
 })
+
+test.describe('zoom component', () => {
+  test('does not add a caption if the `showCaptions` option is disabled', async ({ testPage }) => {
+    await testPage.goto('zoom', true)
+
+    await expect(testPage.getNthImage(3)).toBeZoomedAfterClick()
+  })
+})

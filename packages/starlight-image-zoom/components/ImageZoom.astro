@@ -43,7 +43,8 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
     width: 100%;
   }
 
-  starlight-image-zoom-zoomable img {
+  starlight-image-zoom-zoomable > :is(img, svg),
+  starlight-image-zoom-zoomable > picture img {
     cursor: zoom-in;
   }
 
@@ -181,7 +182,7 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
     'starlight-image-zoom',
     class StarlightImageZoom extends HTMLElement {
       #currentZoom?: CurrentZoom | undefined
-      #images: HTMLImageElement[] = []
+      #images: ZoomableElement[] = []
       #previousFocus?: Element | null | undefined
       #template = this.querySelector('template')
 
@@ -222,7 +223,7 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
 
       #setupZoom(zoomables: Element[]) {
         for (const zoomable of zoomables) {
-          const img = zoomable.querySelector('img')
+          const img = zoomable.querySelector<ZoomableElement>(':scope > img, :scope > picture img, :scope > svg')
           if (!img) continue
 
           this.#images.push(img)
@@ -242,10 +243,20 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
           return
         }
 
-        if (!(target instanceof HTMLImageElement)) return
-        if (!this.#images.includes(target)) return
+        if (!(target instanceof HTMLImageElement) && !(target instanceof SVGElement)) return
 
-        this.#open(target)
+        let zoomTarget: ZoomableElement | undefined
+
+        if (this.#images.includes(target)) {
+          zoomTarget = target
+        } else if (this.#isSVGElement(target)) {
+          const svg = target.closest('svg')
+          if (svg && this.#images.includes(svg)) zoomTarget = svg
+        }
+
+        if (!zoomTarget) return
+
+        this.#open(zoomTarget)
       }
 
       #onResize = () => {
@@ -261,7 +272,7 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
         this.#close()
       }
 
-      #open(image: HTMLImageElement) {
+      #open(image: ZoomableElement) {
         if (!this.#template || this.#currentZoom) return
 
         // Save the current focused element to restore it later.
@@ -298,7 +309,7 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
         figure.append(zoomedImage)
 
         // Set the caption.
-        this.#setCaption(image.getAttribute('alt'), figure)
+        this.#setCaption(image.getAttribute('alt') || this.#getSVGTitle(image), figure)
 
         // Render the portaled dialog.
         document.body.append(portal)
@@ -378,11 +389,11 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
         figure.append(caption)
       }
 
-      #cloneAndZoomImage(image: HTMLImageElement) {
+      #cloneAndZoomImage(image: ZoomableElement) {
         const imageRect = image.getBoundingClientRect()
 
-        // Zoom SVGs at the figure's size, not the image's size.
-        const isSVG = this.#isSVGImage(image)
+        // Zoom SVG images at the figure's size, not the image's size.
+        const isSVG = this.#isSVGElement(image) || this.#isSVGImage(image)
         const naturalWidth = isSVG ? window.innerWidth : image.naturalWidth
         const naturalHeight = isSVG ? window.innerHeight : image.naturalHeight
 
@@ -395,7 +406,7 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
         const top = (window.innerHeight - height) / 2
         const left = (window.innerWidth - width) / 2
 
-        const clone = image.cloneNode(true) as HTMLImageElement
+        const clone = image.cloneNode(true) as ZoomableElement
         clone.removeAttribute('id')
 
         clone.style.position = 'absolute'
@@ -421,7 +432,12 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
 
         // If the image is inside a `<picture>` element, we need to update the `src` attribute and use the correct
         // source.
-        if (image.parentElement?.tagName === 'PICTURE' && image.currentSrc) {
+        if (
+          !isSVG &&
+          image.parentElement?.tagName === 'PICTURE' &&
+          image.currentSrc &&
+          clone instanceof HTMLImageElement
+        ) {
           clone.src = image.currentSrc
         }
 
@@ -445,13 +461,25 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
           return false
         }
       }
+
+      #isSVGElement(image: ZoomableElement): image is SVGElement {
+        return image instanceof SVGElement
+      }
+
+      #getSVGTitle(image: ZoomableElement) {
+        if (!this.#isSVGElement(image)) return null
+
+        return image.querySelector('title')?.textContent?.trim() ?? null
+      }
     },
   )
+
+  type ZoomableElement = HTMLImageElement | SVGElement
 
   interface CurrentZoom {
     body: { overflow: string; width: string }
     dialog: HTMLDialogElement
-    image: HTMLImageElement
-    zoomedImage: HTMLImageElement
+    image: ZoomableElement
+    zoomedImage: ZoomableElement
   }
 </script>
