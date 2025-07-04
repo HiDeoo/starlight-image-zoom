@@ -309,7 +309,7 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
         figure.append(zoomedImage)
 
         // Set the caption.
-        this.#setCaption(image.getAttribute('alt'), figure)
+        this.#setCaption(image.getAttribute('alt') || this.#getSVGTitle(image), figure)
 
         // Render the portaled dialog.
         document.body.append(portal)
@@ -464,6 +464,12 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
 
       #isSVGElement(image: ZoomableElement): image is SVGElement {
         return image instanceof SVGElement
+      }
+
+      #getSVGTitle(image: ZoomableElement) {
+        if (!this.#isSVGElement(image)) return null
+
+        return image.querySelector('title')?.textContent?.trim() ?? null
       }
     },
   )
