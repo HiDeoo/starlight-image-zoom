@@ -1,0 +1,72 @@
+---
+title: Zoom Component
+---
+
+To create zoomable images in contexts where the Starlight Image Zoom plugin cannot automatically apply such functionality, you can use the `<Zoom>` component.
+
+## Import
+
+```tsx
+import { Zoom } from 'starlight-image-zoom/components'
+```
+
+## Usage
+
+Use the `<Zoom>` component to wrap an image or an [SVG component](https://docs.astro.build/en/guides/images/#svg-components) and make it zoomable.
+
+By default, images defined in your content will be zoomable, except for a few [expected cases](/ignoring-images/#exceptions), such as icons, images embedded in interactive elements, or images embedded in elements with the `not-content` CSS class.
+Some advanced use cases, such as rendering images in a loop of an Astro component, or using SVG components, cannot be automatically detected by the plugin.
+
+For such cases, you can use the `<Zoom>` component to wrap the image or SVG component, which will make it zoomable.
+
+import { Preview } from '@hideoo/starlight-plugins-docs-components'
+import ImageAttribution from '../../../components/ImageAttribution.astro'
+import { Zoom } from 'starlight-image-zoom/components'
+import Tv from '../../../assets/demo/tv.svg'
+
+<Preview>
+
+```mdx {9,11}
+---
+// src/content/docs/example.mdx
+title: My page title
+---
+
+import { Zoom } from 'starlight-image-zoom/components'
+import Tv from '../../assets/tv.svg'
+
+<Zoom label="TV drawing">
+  <Tv />
+</Zoom>
+```
+
+<Fragment slot="preview">
+
+<Zoom label="TV drawing">
+  <Tv />
+</Zoom>
+
+<ImageAttribution
+  label="Illustration"
+  id="a-black-and-white-drawing-of-a-tv-ZII9ZhonGZU"
+  name="Vladimir Nikolic"
+  username="wwllaaddaa"
+/>
+
+</Fragment>
+
+</Preview>
+
+## `<Zoom>` Props
+
+The `<Zoom>` component accepts the following props:
+
+### `label`
+
+**required**  
+**type:** `string`
+
+A label to provide context to zoomable images, e.g. zoom and unzoom buttons, for assistive technologies, such as screen readers.
+
+This label does not have to be the same as the image's `alt` attribute or the SVG's `<title>` element.
+In the case of SVGs, the `label` prop can be relatively short, e.g. "Sun icon", while the `<title>` element of the SVG can be more descriptive, e.g. "A yellow sun icon with rays extending outward".
