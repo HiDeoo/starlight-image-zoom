@@ -7,6 +7,7 @@
   "type": "module",
   "exports": {
     ".": "./index.ts",
+    "./components": "./components.ts",
     "./components/ImageZoom.astro": "./components/ImageZoom.astro",
     "./overrides/MarkdownContent.astro": "./overrides/MarkdownContent.astro",
     "./package.json": "./package.json"

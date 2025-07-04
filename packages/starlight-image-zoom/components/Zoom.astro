@@ -1,0 +1,18 @@
+---
+import { STARLIGHT_IMAGE_ZOOM_ZOOMABLE_TAG } from '../libs/constants'
+
+interface Props {
+  label: string
+}
+
+const { label } = Astro.props
+---
+
+<STARLIGHT_IMAGE_ZOOM_ZOOMABLE_TAG>
+  <slot />
+  <button aria-label={`Zoom image${label.length > 0 ? `: ${label}` : ''}`} class="starlight-image-zoom-control">
+    <svg aria-hidden="true" fill="currentColor" viewBox="0 0 24 24">
+      <use href="#starlight-image-zoom-icon-zoom"></use>
+    </svg>
+  </button>
+</STARLIGHT_IMAGE_ZOOM_ZOOMABLE_TAG>

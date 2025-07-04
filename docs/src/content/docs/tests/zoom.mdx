@@ -3,7 +3,7 @@ title: Zoom
 pagefind: false
 ---
 
-An SVG image:
+An SVG image using Markdown syntax:
 
 ![Astro logo](../../../assets/tests/astro-light.svg)
 
@@ -13,6 +13,15 @@ import { Icon } from '@astrojs/starlight/components'
 
 <Icon name="star" color="goldenrod" size="2rem" />
 
-An image in a link:
+An image in a Markdown link:
 
 [![Astro logo](../../../assets/tests/astro-light.svg)](https://astro.build)
+
+An SVG image imported as an Astro component wrapped in the `<Zoom>` component:
+
+import { Zoom } from 'starlight-image-zoom/components'
+import AstroLight from '../../../assets/tests/astro-light.svg'
+
+<Zoom label="Astro logo SVG component">
+  <AstroLight alt="Astro logo" />
+</Zoom>

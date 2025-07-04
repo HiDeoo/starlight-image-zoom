@@ -28,12 +28,14 @@ export function rehypeStarlightImageZoom() {
 
       const isInvalidImage = parents.some((parent) => {
         return (
-          parent.type === 'element' &&
-          // Exclude images wrapped in an element with the CSS class `not-content`.
-          (String(parent.properties['className']).includes('not-content') ||
-            // Exclude images wrapped in an interactive element.
-            parent.tagName === 'button' ||
-            (parent.tagName === 'a' && 'href' in parent.properties))
+          (parent.type === 'element' &&
+            // Exclude images wrapped in an element with the CSS class `not-content`.
+            (String(parent.properties['className']).includes('not-content') ||
+              // Exclude images wrapped in an interactive element.
+              parent.tagName === 'button' ||
+              (parent.tagName === 'a' && 'href' in parent.properties))) ||
+          // Exclude images wrapped in the `<Zoom>` component.
+          (parent.type === 'mdxJsxFlowElement' && parent.name === 'Zoom')
         )
       })
 

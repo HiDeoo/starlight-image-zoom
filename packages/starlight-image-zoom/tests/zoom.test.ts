@@ -56,7 +56,7 @@ test('does not zoom an image using the `<Image>` component with the `zoom-off` d
 test('does not zoom an SVG image inside an interactive element', async ({ testPage }) => {
   await testPage.goto('zoom')
 
-  const linkImage = testPage.getNthImage(1)
+  const linkImage = testPage.getNthImage(2)
   await linkImage.click()
 
   await expect(testPage.getZoomedImage()).not.toBeAttached()
