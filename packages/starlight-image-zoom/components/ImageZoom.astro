@@ -417,8 +417,14 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
         clone.style.transform = ''
 
         // Finds out the scale transformations so that the zoomed image fits within the image rect.
-        const scaleX = imageRect.width / width
-        const scaleY = imageRect.height / height
+        let scaleX = imageRect.width / width
+        let scaleY = imageRect.height / height
+
+        // If the image is an SVG, normalize the scale.
+        if (isSVG) {
+          if (scaleX > scaleY) scaleY = scaleX
+          else scaleX = scaleY
+        }
 
         // Calculate the translation to align the zoomed image within the image rect.
         const translateX = (-left + (imageRect.width - width) / 2 + imageRect.left) / scaleX
