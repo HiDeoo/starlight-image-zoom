@@ -1,5 +1,11 @@
 # starlight-image-zoom
 
+## 0.13.1
+
+### Patch Changes
+
+- [#47](https://github.com/HiDeoo/starlight-image-zoom/pull/47) [`c28782b`](https://github.com/HiDeoo/starlight-image-zoom/commit/c28782b5435ec6cda07541d37345b8edb809fa50) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Fixes an animation glitch when zooming in/out SVG images.
+
 ## 0.13.0
 
 ### Minor Changes
