@@ -1,5 +1,11 @@
 # starlight-image-zoom
 
+## 0.13.2
+
+### Patch Changes
+
+- [#49](https://github.com/HiDeoo/starlight-image-zoom/pull/49) [`8f2c2e1`](https://github.com/HiDeoo/starlight-image-zoom/commit/8f2c2e1c0a4c2af4aa07a730e77c32b92223d58c) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Setups trusted publishing using OpenID Connect (OIDC) authentication — no code changes.
+
 ## 0.13.1
 
 ### Patch Changes

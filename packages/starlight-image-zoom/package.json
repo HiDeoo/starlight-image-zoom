@@ -1,6 +1,6 @@
 {
   "name": "starlight-image-zoom",
-  "version": "0.13.1",
+  "version": "0.13.2",
   "license": "MIT",
   "description": "Starlight plugin adding zoom capabilities to your documentation images.",
   "author": "HiDeoo <github@hideoo.dev> (https://hideoo.dev)",
