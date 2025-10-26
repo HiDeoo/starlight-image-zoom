@@ -2,6 +2,11 @@ import starlight from '@astrojs/starlight'
 import { defineConfig } from 'astro/config'
 import starlightImageZoom from 'starlight-image-zoom'
 
+const site =
+  process.env['VERCEL_ENV'] !== 'production' && process.env['VERCEL_URL']
+    ? `https://${process.env['VERCEL_URL']}`
+    : 'https://starlight-image-zoom.vercel.app/'
+
 export default defineConfig({
   integrations: [
     starlight({
@@ -9,6 +14,19 @@ export default defineConfig({
       editLink: {
         baseUrl: 'https://github.com/HiDeoo/starlight-image-zoom/edit/main/docs/',
       },
+      head: [
+        {
+          tag: 'meta',
+          attrs: { property: 'og:image', content: new URL('og.jpg', site).href },
+        },
+        {
+          tag: 'meta',
+          attrs: {
+            property: 'og:image:alt',
+            content: 'Starlight plugin adding zoom capabilities to your documentation images.',
+          },
+        },
+      ],
       plugins: [starlightImageZoom()],
       sidebar: [
         {
@@ -42,4 +60,5 @@ export default defineConfig({
       title: 'Starlight Image Zoom',
     }),
   ],
+  site,
 })
