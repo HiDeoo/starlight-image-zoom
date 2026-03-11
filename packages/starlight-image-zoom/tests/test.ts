@@ -59,7 +59,6 @@ export const expect = baseExpect.extend({
 
     const message = () =>
       `${this.utils.matcherHint(assertionName, undefined, undefined, { isNot: this.isNot })}\n\n` +
-      // eslint-disable-next-line @typescript-eslint/no-base-to-string
       `Locator: ${String(image)}\n` +
       `Expected: ${pass ? (this.isNot ? 'not' : '') : ''}${this.utils.printExpected(expected)}\n${
         matcherResult ? `Received: ${this.utils.printReceived(matcherResult.actual)}` : ''
