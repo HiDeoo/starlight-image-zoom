@@ -58,6 +58,7 @@ export function rehypeStarlightImageZoom() {
         const altAttribute = node.attributes.find(
           (attribute) => attribute.type === 'mdxJsxAttribute' && attribute.name === 'alt',
         )
+        // eslint-disable-next-line @typescript-eslint/no-base-to-string
         alt = String(altAttribute?.value).trim()
       }
 

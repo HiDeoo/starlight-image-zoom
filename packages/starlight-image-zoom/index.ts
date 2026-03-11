@@ -14,14 +14,17 @@ const starlightImageZoomConfigSchema = z
      */
     showCaptions: z.boolean().default(true),
   })
-  .default({})
+  .prefault({})
 
 export default function starlightImageZoomPlugin(userConfig?: StarlightImageZoomUserConfig): StarlightPlugin {
   const parsedConfig = starlightImageZoomConfigSchema.safeParse(userConfig)
 
   if (!parsedConfig.success) {
     throw new AstroError(
-      `The provided plugin configuration is invalid.\n${parsedConfig.error.issues.map((issue) => issue.message).join('\n')}`,
+      `Invalid starlight-blog configuration:
+
+${z.prettifyError(parsedConfig.error)}
+`,
       `See the error report above for more informations.\n\nIf you believe this is a bug, please file an issue at https://github.com/HiDeoo/starlight-image-zoom/issues/new/choose`,
     )
   }
@@ -32,9 +35,7 @@ export default function starlightImageZoomPlugin(userConfig?: StarlightImageZoom
       'config:setup'({ addIntegration, config, updateConfig }) {
         const updatedConfig: Partial<StarlightUserConfig> = { components: { ...config.components } }
 
-        if (!updatedConfig.components) {
-          updatedConfig.components = {}
-        }
+        updatedConfig.components ??= {}
 
         if (!config.components?.MarkdownContent) {
           updatedConfig.components.MarkdownContent = 'starlight-image-zoom/overrides/MarkdownContent.astro'

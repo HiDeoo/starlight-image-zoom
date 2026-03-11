@@ -53,10 +53,18 @@ export default defineConfig({
         },
         { label: 'Demo', link: '/demo/' },
       ],
-      social: {
-        blueSky: 'https://bsky.app/profile/hideoo.dev',
-        github: 'https://github.com/HiDeoo/starlight-image-zoom',
-      },
+      social: [
+        {
+          href: 'https://bsky.app/profile/hideoo.dev',
+          icon: 'blueSky',
+          label: 'Bluesky',
+        },
+        {
+          href: 'https://github.com/HiDeoo/starlight-image-zoom',
+          icon: 'github',
+          label: 'GitHub',
+        },
+      ],
       title: 'Starlight Image Zoom',
     }),
   ],
