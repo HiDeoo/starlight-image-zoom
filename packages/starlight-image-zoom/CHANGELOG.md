@@ -1,5 +1,15 @@
 # starlight-image-zoom
 
+## 0.14.0
+
+### Minor Changes
+
+- [#52](https://github.com/HiDeoo/starlight-image-zoom/pull/52) [`293a528`](https://github.com/HiDeoo/starlight-image-zoom/commit/293a5280f1b84c1fbec333ab207e0ffa96e3a909) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Adds support for Astro v6, drops support for Astro v5.
+
+  ⚠️ **BREAKING CHANGE:** The minimum supported version of Starlight is now `0.38.0`.
+
+  Please follow the [upgrade guide](https://github.com/withastro/starlight/releases/tag/%40astrojs%2Fstarlight%400.38.0) to update your project.
+
 ## 0.13.2
 
 ### Patch Changes
