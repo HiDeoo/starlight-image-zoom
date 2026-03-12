@@ -1,5 +1,11 @@
 # starlight-image-zoom
 
+## 0.14.1
+
+### Patch Changes
+
+- [#54](https://github.com/HiDeoo/starlight-image-zoom/pull/54) [`d916f6d`](https://github.com/HiDeoo/starlight-image-zoom/commit/d916f6d16fc80b70ac2cc108ab229aac0a179444) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Fixes the error message logged when the plugin configuration is invalid.
+
 ## 0.14.0
 
 ### Minor Changes
