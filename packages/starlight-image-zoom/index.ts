@@ -21,7 +21,7 @@ export default function starlightImageZoomPlugin(userConfig?: StarlightImageZoom
 
   if (!parsedConfig.success) {
     throw new AstroError(
-      `Invalid starlight-blog configuration:
+      `Invalid starlight-image-zoom configuration:
 
 ${z.prettifyError(parsedConfig.error)}
 `,
