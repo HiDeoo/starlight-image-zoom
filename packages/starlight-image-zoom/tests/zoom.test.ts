@@ -86,3 +86,21 @@ test('preserves image ID in the `data-zoom-id` attribute', async ({ testPage }) 
   expect(await zoomedImage.getAttribute('id')).toBe(null)
   expect(await zoomedImage.getAttribute('data-zoom-id')).toBe('astro-logo')
 })
+
+test('centers a zoomed SVG image while preserving its aspect ratio', async ({ testPage }) => {
+  await testPage.page.setViewportSize({ width: 1000, height: 600 })
+  await testPage.goto('zoom')
+
+  const image = testPage.page.getByAltText('Preserve aspect ratio SVG')
+
+  await testPage.zoomImage(image)
+
+  const zoomedBox = await testPage.getZoomedImage().boundingBox()
+
+  if (!zoomedBox) throw new Error('Could not get zoomed image bounding box')
+
+  expect(zoomedBox.width).toBe(600)
+  expect(zoomedBox.height).toBe(600)
+  expect(zoomedBox.x).toBe(200)
+  expect(zoomedBox.y).toBe(0)
+})

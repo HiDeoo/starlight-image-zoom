@@ -392,17 +392,17 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
       #cloneAndZoomImage(image: ZoomableElement) {
         const imageRect = image.getBoundingClientRect()
 
-        // Zoom SVG images at the figure's size, not the image's size.
+        // Preserve SVG aspect ratios while still allow them to scale up to the viewport.
         const isSVG = this.#isSVGElement(image) || this.#isSVGImage(image)
-        const naturalWidth = isSVG ? window.innerWidth : image.naturalWidth
-        const naturalHeight = isSVG ? window.innerHeight : image.naturalHeight
+        const naturalWidth = isSVG ? imageRect.width : image.naturalWidth
+        const naturalHeight = isSVG ? imageRect.height : image.naturalHeight
 
-        const maxWidth = Math.min(window.innerWidth, naturalWidth)
-        const maxHeight = Math.min(window.innerHeight, naturalHeight)
+        const maxWidth = isSVG ? window.innerWidth : Math.min(window.innerWidth, naturalWidth)
+        const maxHeight = isSVG ? window.innerHeight : Math.min(window.innerHeight, naturalHeight)
         const scale = Math.min(maxWidth / naturalWidth, maxHeight / naturalHeight)
 
-        const width = (isSVG ? window.innerWidth : image.naturalWidth) * scale
-        const height = (isSVG ? window.innerHeight : image.naturalHeight) * scale
+        const width = naturalWidth * scale
+        const height = naturalHeight * scale
         const top = (window.innerHeight - height) / 2
         const left = (window.innerWidth - width) / 2
 
