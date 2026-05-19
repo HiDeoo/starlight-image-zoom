@@ -1,5 +1,11 @@
 # starlight-image-zoom
 
+## 0.14.2
+
+### Patch Changes
+
+- [#61](https://github.com/HiDeoo/starlight-image-zoom/pull/61) [`31fed13`](https://github.com/HiDeoo/starlight-image-zoom/commit/31fed13ed36d15229f7ea1196ab19b0b9fbc8bee) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Fixes a zoomed SVG alignment issue for SVGs using non-default `preserveAspectRatio` values.
+
 ## 0.14.1
 
 ### Patch Changes
