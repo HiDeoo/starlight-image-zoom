@@ -1,7 +1,7 @@
 import type { StarlightPlugin, StarlightUserConfig } from '@astrojs/starlight/types'
-import { AstroError } from 'astro/errors'
 import { z } from 'astro/zod'
 
+import { throwPluginError } from './libs/error'
 import { starlightImageZoomIntegration } from './libs/integration'
 
 const starlightImageZoomConfigSchema = z
@@ -20,13 +20,10 @@ export default function starlightImageZoomPlugin(userConfig?: StarlightImageZoom
   const parsedConfig = starlightImageZoomConfigSchema.safeParse(userConfig)
 
   if (!parsedConfig.success) {
-    throw new AstroError(
-      `Invalid starlight-image-zoom configuration:
+    throwPluginError(`Invalid starlight-image-zoom configuration:
 
 ${z.prettifyError(parsedConfig.error)}
-`,
-      `See the error report above for more informations.\n\nIf you believe this is a bug, please file an issue at https://github.com/HiDeoo/starlight-image-zoom/issues/new/choose`,
-    )
+`)
   }
 
   return {

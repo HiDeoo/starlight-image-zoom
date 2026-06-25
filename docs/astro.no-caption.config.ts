@@ -1,8 +1,10 @@
+import { unified } from '@astrojs/markdown-remark'
 import starlight from '@astrojs/starlight'
 import { defineConfig } from 'astro/config'
 import starlightImageZoom from 'starlight-image-zoom'
 
 export default defineConfig({
+  markdown: { processor: unified() },
   base: '/no-caption/',
   integrations: [
     starlight({
