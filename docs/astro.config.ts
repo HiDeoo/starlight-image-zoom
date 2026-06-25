@@ -1,3 +1,4 @@
+import { unified } from '@astrojs/markdown-remark'
 import starlight from '@astrojs/starlight'
 import { defineConfig } from 'astro/config'
 import starlightImageZoom from 'starlight-image-zoom'
@@ -8,6 +9,7 @@ const site =
     : 'https://starlight-image-zoom.vercel.app/'
 
 export default defineConfig({
+  markdown: { processor: unified() },
   integrations: [
     starlight({
       customCss: ['./src/styles/custom.css'],
