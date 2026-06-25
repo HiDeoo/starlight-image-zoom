@@ -1,5 +1,17 @@
 # starlight-image-zoom
 
+## 0.15.0
+
+### Minor Changes
+
+- [#65](https://github.com/HiDeoo/starlight-image-zoom/pull/65) [`90bf6c7`](https://github.com/HiDeoo/starlight-image-zoom/commit/90bf6c714fb732e80b2e147c6fed0f1f7a3bd8e8) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Adds support for Astro v7, drops support for Astro v6.
+
+  ⚠️ **BREAKING CHANGE:** The minimum supported version of Starlight is now `0.41.0`.
+
+  Please follow the [upgrade guide](https://github.com/withastro/starlight/releases/tag/%40astrojs%2Fstarlight%400.41.0) to update your project.
+
+  Note that the Sätteri Markdown processor is not yet supported and you must [use `unified()` from `@astrojs/markdown-remark`](https://docs.astro.build/en/guides/upgrade-to/v7/#what-should-i-do-3) instead. To follow the progress of Sätteri support, see [this issue](https://github.com/HiDeoo/starlight-image-zoom/issues/63).
+
 ## 0.14.2
 
 ### Patch Changes
