@@ -8,17 +8,20 @@
   "scripts": {
     "dev": "astro dev",
     "dev:no-caption": "astro dev --config astro.no-caption.config.ts",
+    "dev:unified": "astro dev --config astro.unified.config.ts",
     "build": "astro build",
     "build:no-caption": "astro build --config astro.no-caption.config.ts",
+    "build:unified": "astro build --config astro.unified.config.ts",
     "preview": "astro preview",
     "preview:no-caption": "astro preview --config astro.no-caption.config.ts",
+    "preview:unified": "astro preview --config astro.unified.config.ts",
     "lint": "eslint . --cache --max-warnings=0"
   },
   "dependencies": {
-    "@astrojs/markdown-remark": "^7.2.0",
-    "@astrojs/starlight": "^0.41.1",
+    "@astrojs/markdown-remark": "^7.3.0",
+    "@astrojs/starlight": "^0.42.0",
     "@hideoo/starlight-plugins-docs-components": "^0.4.2",
-    "astro": "^7.0.2",
+    "astro": "^7.2.10",
     "sharp": "^0.34.5",
     "starlight-image-zoom": "workspace:*"
   },

@@ -4,41 +4,25 @@ import { CONTINUE, EXIT, SKIP, visit } from 'unist-util-visit'
 import { visitParents } from 'unist-util-visit-parents'
 
 import { STARLIGHT_IMAGE_ZOOM_ZOOMABLE_TAG } from './constants'
-
-const elementTagNames = new Set(['img', 'picture'])
-const mdxJsxFlowElementNames = new Set(['img', 'picture', 'astro-image', 'Image', 'Picture'])
+import {
+  ElementTagNames,
+  hasDataZoomOffAttribute,
+  isZoomPreventedByAncestor,
+  makeImageZoomButton,
+  MdxJsxFlowElementNames,
+} from './markdown'
 
 export function rehypeStarlightImageZoom() {
   return function transformer(tree: Root) {
     visitParents(tree, ['element', 'mdxJsxFlowElement'], (node, parents) => {
       if (node.type !== 'element' && node.type !== 'mdxJsxFlowElement') return CONTINUE
-      if (node.type === 'element' && !elementTagNames.has(node.tagName)) return CONTINUE
-      if (node.type === 'mdxJsxFlowElement' && node.name && !mdxJsxFlowElementNames.has(node.name)) return CONTINUE
+      if (node.type === 'element' && !ElementTagNames.includes(node.tagName)) return CONTINUE
+      if (node.type === 'mdxJsxFlowElement' && node.name && !MdxJsxFlowElementNames.includes(node.name)) return CONTINUE
 
       // Skip images with the `data-zoom-off` attribute.
-      if (
-        (node.type === 'element' && 'dataZoomOff' in node.properties) ||
-        (node.type === 'mdxJsxFlowElement' &&
-          node.attributes.some(
-            (attribute) => attribute.type === 'mdxJsxAttribute' && attribute.name === 'data-zoom-off',
-          ))
-      ) {
-        return SKIP
-      }
+      if (hasDataZoomOffAttribute(node)) return SKIP
 
-      const isInvalidImage = parents.some((parent) => {
-        return (
-          (parent.type === 'element' &&
-            // Exclude images wrapped in an element with the CSS class `not-content`.
-            (String(parent.properties['className']).includes('not-content') ||
-              // Exclude images wrapped in an interactive element.
-              parent.tagName === 'button' ||
-              (parent.tagName === 'a' && 'href' in parent.properties))) ||
-          // Exclude images wrapped in the `<Zoom>` component.
-          (parent.type === 'mdxJsxFlowElement' && parent.name === 'Zoom')
-        )
-      })
-
+      const isInvalidImage = parents.some(isZoomPreventedByAncestor)
       if (isInvalidImage) return SKIP
 
       let alt = ''
@@ -71,38 +55,7 @@ export function rehypeStarlightImageZoom() {
         type: 'element',
         tagName: STARLIGHT_IMAGE_ZOOM_ZOOMABLE_TAG,
         properties: {},
-        children: [
-          node,
-          {
-            type: 'element',
-            tagName: 'button',
-            properties: {
-              'aria-label': `Zoom image${alt.length > 0 ? `: ${alt}` : ''}`,
-              class: 'starlight-image-zoom-control',
-            },
-            children: [
-              {
-                type: 'element',
-                tagName: 'svg',
-                properties: {
-                  'aria-hidden': 'true',
-                  fill: 'currentColor',
-                  viewBox: '0 0 24 24',
-                },
-                children: [
-                  {
-                    type: 'element',
-                    tagName: 'use',
-                    properties: {
-                      href: '#starlight-image-zoom-icon-zoom',
-                    },
-                    children: [],
-                  },
-                ],
-              },
-            ],
-          },
-        ],
+        children: [node, makeImageZoomButton(alt)],
       }
 
       return SKIP
