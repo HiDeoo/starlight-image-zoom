@@ -20,6 +20,7 @@
   "dependencies": {
     "mdast-util-mdx-jsx": "^3.2.0",
     "rehype-raw": "^7.0.0",
+    "satteri": "^0.10.3",
     "unist-util-visit": "^5.1.0",
     "unist-util-visit-parents": "^6.0.2"
   },

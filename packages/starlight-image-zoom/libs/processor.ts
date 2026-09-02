@@ -3,13 +3,14 @@ import rehypeRaw from 'rehype-raw'
 
 import { throwPluginError } from './error'
 import { rehypeMetaString, rehypeStarlightImageZoom } from './rehype'
+import { satteriPreserveCodeMetadata, satteriRestoreCodeMetadata, satteriStarlightImageZoom } from './satteri'
 
 export function applyMarkdownPlugin(processor: MarkdownProcessor) {
   if (isSatteriProcessor(processor)) {
-    throwPluginError(
-      "The Sätteri Markdown processor is not yet supported by the starlight-image-zoom plugin. Switch to 'unified()' from '@astrojs/markdown-remark'.",
-      'To follow the progress of Sätteri support, see https://github.com/HiDeoo/starlight-image-zoom/issues/63',
-    )
+    processor.options.features.rawHtml = true
+    processor.options.mdastPlugins.push(satteriPreserveCodeMetadata())
+    processor.options.hastPlugins.unshift(satteriRestoreCodeMetadata())
+    processor.options.hastPlugins.push(satteriStarlightImageZoom())
   } else if (isUnifiedProcessor(processor)) {
     processor.options.rehypePlugins.push(rehypeMetaString, rehypeRaw, rehypeStarlightImageZoom)
   } else {
@@ -19,8 +20,12 @@ export function applyMarkdownPlugin(processor: MarkdownProcessor) {
 
 function isSatteriProcessor(processor: unknown): processor is SatteriMarkdownProcessor {
   if (typeof processor !== 'object' || processor === null) return false
-  const candidate = processor as { name?: unknown; options?: { hastPlugins?: unknown } }
-  return candidate.name === 'satteri' && Array.isArray(candidate.options?.hastPlugins)
+  const candidate = processor as { name?: unknown; options?: { hastPlugins?: unknown; mdastPlugins?: unknown } }
+  return (
+    candidate.name === 'satteri' &&
+    Array.isArray(candidate.options?.hastPlugins) &&
+    Array.isArray(candidate.options.mdastPlugins)
+  )
 }
 
 function isUnifiedProcessor(processor: unknown): processor is UnifiedMarkdownProcessor {
@@ -33,7 +38,11 @@ type MarkdownProcessor = NonNullable<AstroConfig['markdown']['processor']>
 
 interface SatteriMarkdownProcessor {
   name: 'satteri'
-  options: { hastPlugins: unknown[] }
+  options: {
+    features: { rawHtml?: boolean }
+    hastPlugins: unknown[]
+    mdastPlugins: unknown[]
+  }
 }
 
 interface UnifiedMarkdownProcessor {

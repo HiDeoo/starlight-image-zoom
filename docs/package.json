@@ -8,10 +8,13 @@
   "scripts": {
     "dev": "astro dev",
     "dev:no-caption": "astro dev --config astro.no-caption.config.ts",
+    "dev:unified": "astro dev --config astro.unified.config.ts",
     "build": "astro build",
     "build:no-caption": "astro build --config astro.no-caption.config.ts",
+    "build:unified": "astro build --config astro.unified.config.ts",
     "preview": "astro preview",
     "preview:no-caption": "astro preview --config astro.no-caption.config.ts",
+    "preview:unified": "astro preview --config astro.unified.config.ts",
     "lint": "eslint . --cache --max-warnings=0"
   },
   "dependencies": {
