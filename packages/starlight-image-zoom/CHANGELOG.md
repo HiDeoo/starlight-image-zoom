@@ -1,5 +1,19 @@
 # starlight-image-zoom
 
+## 0.16.0
+
+### Minor Changes
+
+- [#67](https://github.com/HiDeoo/starlight-image-zoom/pull/67) [`be1f4b3`](https://github.com/HiDeoo/starlight-image-zoom/commit/be1f4b3670906dbe974328e0356035b4567a16df) Thanks [@HiDeoo](https://github.com/HiDeoo)! - ⚠️ **BREAKING CHANGE:** The minimum supported version of Starlight is now version `0.42.0`.
+
+  Please use the `@astrojs/upgrade` command to upgrade your project:
+
+  ```sh
+  npx @astrojs/upgrade
+  ```
+
+- [#67](https://github.com/HiDeoo/starlight-image-zoom/pull/67) [`be1f4b3`](https://github.com/HiDeoo/starlight-image-zoom/commit/be1f4b3670906dbe974328e0356035b4567a16df) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Adds support for the Sätteri Markdown processor.
+
 ## 0.15.0
 
 ### Minor Changes
