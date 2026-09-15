@@ -9,8 +9,8 @@ export class TestPage {
     // Wait for the zoomed image to be stable.
     const zoomedImageLocator = image.page().locator(TestPage.#zoomedImageSelector)
     const zoomedImageHandle = await zoomedImageLocator.elementHandle()
-    await zoomedImageHandle?.waitForElementState('stable')
-    await zoomedImageHandle?.waitForElementState('stable')
+    await zoomedImageHandle.waitForElementState('stable')
+    await zoomedImageHandle.waitForElementState('stable')
   }
 
   constructor(public readonly page: Page) {}

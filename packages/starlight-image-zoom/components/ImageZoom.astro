@@ -209,7 +209,7 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
             window.addEventListener('resize', this.#onResize)
           })
         }
-        globalThis.addEventListener('DOMContentLoaded', initialize, { once: true })
+        addEventListener('DOMContentLoaded', initialize, { once: true })
         document.addEventListener(
           'astro:after-preparation',
           () => {
@@ -340,7 +340,7 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
         document.body.classList.add(this.#classList.transition)
         document.body.classList.remove(this.#classList.opened)
 
-        const { matches: prefersReducedMotion } = globalThis.matchMedia('(prefers-reduced-motion: reduce)')
+        const { matches: prefersReducedMotion } = matchMedia('(prefers-reduced-motion: reduce)')
 
         if (disableAnimation || prefersReducedMotion) {
           this.#onUnzoomEnd()

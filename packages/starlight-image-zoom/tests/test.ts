@@ -1,4 +1,4 @@
-import { expect as baseExpect, test as base, type Locator } from '@playwright/test'
+import { expect as baseExpect, test as base, type Locator, type ExpectMatcherState } from '@playwright/test'
 
 import { TestPage } from './fixtures/TestPage'
 
@@ -11,7 +11,7 @@ export const test = base.extend<Fixtures>({
 })
 
 export const expect = baseExpect.extend({
-  async toBeZoomedAfterClick(image: Locator) {
+  async toBeZoomedAfterClick(this: ExpectMatcherState, image: Locator) {
     const page = image.page()
 
     const assertionName = 'toHaveZoomedImage'
@@ -40,7 +40,7 @@ export const expect = baseExpect.extend({
       const captionLocator = dialog.locator('figcaption')
       const noCaption = await page.locator('starlight-image-zoom').getAttribute('data-hide-caption')
 
-      if (imageAlt.length === 0 || noCaption !== null) {
+      if (noCaption !== null || imageAlt.length === 0) {
         // If the image has no alt attribute, the caption should not be visible.
         expected = 'hidden'
         await baseExpect(captionLocator).not.toBeAttached()
@@ -60,7 +60,7 @@ export const expect = baseExpect.extend({
     const message = () =>
       `${this.utils.matcherHint(assertionName, undefined, undefined, { isNot: this.isNot })}\n\n` +
       `Locator: ${String(image)}\n` +
-      `Expected: ${pass ? (this.isNot ? 'not' : '') : ''}${this.utils.printExpected(expected)}\n${
+      `Expected: ${pass && this.isNot ? 'not' : ''}${this.utils.printExpected(expected)}\n${
         matcherResult ? `Received: ${this.utils.printReceived(matcherResult.actual)}` : ''
       }`
 
