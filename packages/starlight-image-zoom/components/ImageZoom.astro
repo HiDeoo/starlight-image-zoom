@@ -13,6 +13,11 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
           <use href="#starlight-image-zoom-icon-unzoom"></use>
         </svg>
       </button>
+      <div aria-label="Zoom controls" class="starlight-image-zoom-zoom-controls" role="group">
+        <button aria-label="Zoom out" data-zoom="out" type="button">-</button>
+        <output aria-live="polite">100%</output>
+        <button aria-label="Zoom in" data-zoom="in" type="button">+</button>
+      </div>
       <figure></figure>
     </dialog>
   </template>
@@ -77,6 +82,40 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
     width: 44px;
   }
 
+  .starlight-image-zoom-zoom-controls {
+    background-color: var(--sl-color-bg-nav);
+    border: 2px solid var(--sl-color-gray-2);
+    border-radius: 22px;
+    display: flex;
+    gap: 4px;
+    inset: 20px auto auto 20px;
+    opacity: 0;
+    padding: 2px;
+    position: absolute;
+    z-index: 1;
+  }
+
+  .starlight-image-zoom-zoom-controls button {
+    background: transparent;
+    border: 0;
+    border-radius: 50%;
+    color: inherit;
+    cursor: pointer;
+    font-size: 1.25rem;
+    height: 36px;
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+    width: 36px;
+  }
+
+  .starlight-image-zoom-zoom-controls output {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    min-width: 52px;
+  }
+
   :is(.starlight-image-zoom-opened, .starlight-image-zoom-transition) .starlight-image-zoom-control {
     inset: 20px 20px auto auto;
   }
@@ -124,6 +163,7 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
   figure {
     cursor: zoom-out;
     height: 100%;
+    overflow: auto;
     position: relative;
     width: 100%;
   }
@@ -135,7 +175,7 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
     inset: auto 0 0 0;
     opacity: 0;
     padding: var(--sl-nav-pad-y) var(--sl-nav-pad-x);
-    position: absolute;
+    position: fixed;
   }
 
   @media (prefers-reduced-transparency) {
@@ -149,17 +189,21 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
   }
 
   button {
-    cursor: zoom-out;
     opacity: 0;
     z-index: 1;
   }
 
-  :global(.starlight-image-zoom-opened) button {
+  .starlight-image-zoom-control {
+    cursor: zoom-out;
+  }
+
+  :global(.starlight-image-zoom-opened) :is(button, .starlight-image-zoom-zoom-controls) {
     opacity: 1;
   }
 
   @media (prefers-reduced-motion: no-preference) {
     button,
+    .starlight-image-zoom-zoom-controls,
     dialog::backdrop,
     figure :global(figcaption) {
       transition: opacity var(--starlight-image-zoom-animation-duration);
@@ -193,6 +237,7 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
         transition: 'starlight-image-zoom-transition',
       }
       #dataZoomTransformKey = 'zoomTransform'
+      #zoomLevels = [1, 1.25, 1.5, 2, 3, 4]
 
       static #initialized = false
 
@@ -263,10 +308,6 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
         this.#close(true)
       }
 
-      #onWheel = () => {
-        this.#close()
-      }
-
       #onCancel = (event: Event) => {
         event.preventDefault()
         this.#close()
@@ -299,7 +340,8 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
           ?.style.setProperty('padding-inline-end', `calc(var(--sl-nav-pad-x) + ${window.innerWidth - clientWidth}px)`)
 
         // Clone the image and apply a zoom effect to it.
-        const zoomedImage = this.#cloneAndZoomImage(image)
+        const clonedZoom = this.#cloneAndZoomImage(image)
+        const { clone: zoomedImage } = clonedZoom
 
         // Apply CSS classes to hide the source image and transition the zoomed image.
         image.classList.add(this.#classList.source)
@@ -315,8 +357,13 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
         document.body.append(portal)
 
         // Open the dialog.
-        document.addEventListener('wheel', this.#onWheel, { once: true })
         dialog.addEventListener('cancel', this.#onCancel)
+        const zoomOut = portal.querySelector<HTMLButtonElement>('[data-zoom="out"]')
+        const zoomIn = portal.querySelector<HTMLButtonElement>('[data-zoom="in"]')
+        const zoomControls = portal.querySelector('.starlight-image-zoom-zoom-controls')
+        zoomControls?.addEventListener('click', (event) => event.stopPropagation())
+        zoomOut?.addEventListener('click', this.#onZoomOut)
+        zoomIn?.addEventListener('click', this.#onZoomIn)
         dialog.showModal()
 
         // Apply a zoom effect to zoom the image in.
@@ -325,15 +372,23 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
           document.body.classList.add(this.#classList.opened)
         })
 
-        this.#currentZoom = { body, dialog, image, zoomedImage }
+        this.#currentZoom = {
+          body,
+          dialog,
+          figure,
+          image,
+          zoomedImage,
+          base: clonedZoom,
+          zoomLevel: 1,
+        }
       }
 
       #close(disableAnimation = false) {
-        window.removeEventListener('wheel', this.#onWheel)
-
         if (!this.#currentZoom) return
 
         const { zoomedImage } = this.#currentZoom
+
+        this.#setZoomLevel(1)
 
         // Remove the zoom effect from the zoomed image.
         zoomedImage.style.transform = zoomedImage.dataset[this.#dataZoomTransformKey] ?? ''
@@ -387,6 +442,52 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
         caption.textContent = text
 
         figure.append(caption)
+      }
+
+      #onZoomIn = (event: MouseEvent) => {
+        event.stopPropagation()
+        if (!this.#currentZoom) return
+
+        const currentIndex = this.#zoomLevels.indexOf(this.#currentZoom.zoomLevel)
+        const nextLevel = this.#zoomLevels[Math.min(currentIndex + 1, this.#zoomLevels.length - 1)] ?? this.#currentZoom.zoomLevel
+        this.#setZoomLevel(nextLevel)
+      }
+
+      #onZoomOut = (event: MouseEvent) => {
+        event.stopPropagation()
+        if (!this.#currentZoom) return
+
+        const currentIndex = this.#zoomLevels.indexOf(this.#currentZoom.zoomLevel)
+        const previousLevel = this.#zoomLevels[Math.max(currentIndex - 1, 0)] ?? this.#currentZoom.zoomLevel
+        this.#setZoomLevel(previousLevel)
+      }
+
+      #setZoomLevel(level: number) {
+        if (!this.#currentZoom) return
+
+        const { base, figure, zoomedImage } = this.#currentZoom
+        const width = base.width * level
+        const height = base.height * level
+        const top = level === 1 ? base.top : Math.max(0, (window.innerHeight - height) / 2)
+        const left = level === 1 ? base.left : Math.max(0, (window.innerWidth - width) / 2)
+
+        zoomedImage.style.width = `${width}px`
+        zoomedImage.style.height = `${height}px`
+        zoomedImage.style.top = `${top}px`
+        zoomedImage.style.left = `${left}px`
+        this.#currentZoom.zoomLevel = level
+
+        const output = this.#currentZoom.dialog.querySelector('output')
+        if (output) output.textContent = `${level * 100}%`
+
+        if (level > 1) {
+          figure.scrollTo({
+            left: Math.max(0, (figure.scrollWidth - figure.clientWidth) / 2),
+            top: Math.max(0, (figure.scrollHeight - figure.clientHeight) / 2),
+          })
+        } else {
+          figure.scrollTo(0, 0)
+        }
       }
 
       #cloneAndZoomImage(image: ZoomableElement) {
@@ -453,7 +554,7 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
           clone.dataset['zoomId'] = image.id
         }
 
-        return clone
+        return { clone, width, height, top, left }
       }
 
       #isSVGImage(image: HTMLImageElement) {
@@ -485,7 +586,10 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
   interface CurrentZoom {
     body: { overflow: string; width: string }
     dialog: HTMLDialogElement
+    figure: HTMLElement
     image: ZoomableElement
     zoomedImage: ZoomableElement
+    base: { clone: ZoomableElement; width: number; height: number; top: number; left: number }
+    zoomLevel: number
   }
 </script>
