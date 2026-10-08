@@ -1,5 +1,11 @@
 # starlight-image-zoom
 
+## 0.16.1
+
+### Patch Changes
+
+- [#73](https://github.com/HiDeoo/starlight-image-zoom/pull/73) [`e3a87ab`](https://github.com/HiDeoo/starlight-image-zoom/commit/e3a87ab853658876cca340ee37a56af501348b49) Thanks [@EricAndrechek](https://github.com/EricAndrechek)! - Adds `astro` as a peer dependency to prevent errors in projects with dependency hoisting disabled.
+
 ## 0.16.0
 
 ### Minor Changes
