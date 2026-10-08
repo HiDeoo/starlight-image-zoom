@@ -29,7 +29,8 @@
     "@types/hast": "^3.0.4"
   },
   "peerDependencies": {
-    "@astrojs/starlight": ">=0.42.0"
+    "@astrojs/starlight": ">=0.42.0",
+    "astro": ">=7.2.10"
   },
   "publishConfig": {
     "access": "public"
