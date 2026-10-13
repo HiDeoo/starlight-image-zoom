@@ -42,6 +42,28 @@ test('removes the dialog after unzooming an image', async ({ testPage }) => {
   await expect(testPage.page.locator('dialog.starlight-image-zoom-dialog')).not.toBeAttached()
 })
 
+test('zooms an image without waiting for the browser to be idle', async ({ testPage }) => {
+  await testPage.goto('zoom')
+
+  // Keep the page busy by continuously running short tasks so that the browser never becomes idle.
+  await testPage.page.evaluate(() => {
+    const channel = new MessageChannel()
+
+    channel.port1.addEventListener('message', () => {
+      const start = performance.now()
+      while (performance.now() - start < 10);
+      channel.port2.postMessage(null)
+    })
+
+    channel.port1.start()
+    channel.port2.postMessage(null)
+  })
+
+  await testPage.getNthImage(0).click()
+
+  await expect(testPage.getZoomedImage()).toHaveCSS('transform', 'none')
+})
+
 test.describe('zoom component', () => {
   test('adds a button to trigger the zoom of an image', async ({ testPage }) => {
     await testPage.goto('zoom')

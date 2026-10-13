@@ -319,17 +319,18 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
         dialog.addEventListener('cancel', this.#onCancel)
         dialog.showModal()
 
+        // Ensure the zoomed image is positioned over the original image before running the animation.
+        zoomedImage.getBoundingClientRect()
+
         // Apply a zoom effect to zoom the image in.
-        onIdle(() => {
-          zoomedImage.style.transform = ''
-          document.body.classList.add(this.#classList.opened)
-        })
+        zoomedImage.style.transform = ''
+        document.body.classList.add(this.#classList.opened)
 
         this.#currentZoom = { body, dialog, image, zoomedImage }
       }
 
       #close(disableAnimation = false) {
-        window.removeEventListener('wheel', this.#onWheel)
+        document.removeEventListener('wheel', this.#onWheel)
 
         if (!this.#currentZoom) return
 
