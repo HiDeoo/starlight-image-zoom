@@ -40,3 +40,16 @@ An image using HTML syntax with the `picture` tag:
 An image using HTML syntax with the `img` tag and no alt text:
 
 <img src="https://astro.build/assets/press/astro-logo-light-gradient.png" />
+
+An SVG image using HTML syntax with the `picture` tag:
+
+<picture>
+  <source
+    media="(prefers-color-scheme: dark)"
+    srcset="/tests/picture-light.svg"
+  />
+  <img
+    alt="Dark and light SVG"
+    src="/tests/picture-dark.svg"
+  />
+</picture>

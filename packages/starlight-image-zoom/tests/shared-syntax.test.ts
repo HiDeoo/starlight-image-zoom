@@ -44,7 +44,7 @@ for (const format of formats) {
     const image = testPage.getNthImage(5)
     await testPage.zoomImage(image)
 
-    expect(await testPage.getZoomedImage().getAttribute('src')).toMatch(/-dark.png$/)
+    expect(await testPage.getZoomedImage().getAttribute('src')).toMatch(/-dark\.png$/)
 
     await testPage.closeZoomedImage()
 
@@ -53,7 +53,28 @@ for (const format of formats) {
 
     await testPage.zoomImage(image)
 
-    expect(await testPage.getZoomedImage().getAttribute('src')).toMatch(/-light.png$/)
+    expect(await testPage.getZoomedImage().getAttribute('src')).toMatch(/-light\.png$/)
+  })
+
+  test(`${format}: zooms the expected SVG image when using HTML syntax with the \`<picture>\` tag`, async ({
+    testPage,
+  }) => {
+    await testPage.page.emulateMedia({ colorScheme: 'light' })
+    await testPage.goto(slug)
+
+    const image = testPage.getNthImage(7)
+    await testPage.zoomImage(image)
+
+    expect(await testPage.getZoomedImage().getAttribute('src')).toMatch(/-dark\.svg$/)
+
+    await testPage.closeZoomedImage()
+
+    await testPage.page.emulateMedia({ colorScheme: 'dark' })
+    await testPage.page.reload()
+
+    await testPage.zoomImage(image)
+
+    expect(await testPage.getZoomedImage().getAttribute('src')).toMatch(/-light\.svg$/)
   })
 
   test(`${format}: labels the zoom button of a \`<picture>\` with its nested \`<img>\` alt`, async ({ testPage }) => {
