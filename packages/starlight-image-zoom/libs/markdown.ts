@@ -1,5 +1,6 @@
 import type { Element, Parents } from 'hast'
-import type { MdxJsxFlowElementHast } from 'satteri'
+import type { MdxJsxFlowElementHast, MdxJsxTextElementHast } from 'satteri'
+import { CONTINUE, EXIT, visit } from 'unist-util-visit'
 
 export const ElementTagNames = ['img', 'picture']
 export const MdxJsxFlowElementNames = ['img', 'picture', 'astro-image', 'Image', 'Picture']
@@ -55,6 +56,37 @@ export function makeImageZoomButton(alt: string): Element {
       },
     ],
   }
+}
+
+export function getAlt(node: ZoomableImageNode) {
+  // The `<Picture>` component has its own `alt` attribute, unlike an HTML `<picture>` element.
+  if ((node.type === 'element' ? node.tagName : node.name) !== 'picture') return readAlt(node)
+
+  let alt = ''
+
+  visit(node, (child) => {
+    if (
+      !(child.type === 'element' && child.tagName === 'img') &&
+      !((child.type === 'mdxJsxFlowElement' || child.type === 'mdxJsxTextElement') && child.name === 'img')
+    ) {
+      return CONTINUE
+    }
+
+    alt = readAlt(child)
+
+    return EXIT
+  })
+
+  return alt
+}
+
+function readAlt(node: ZoomableImageNode | MdxJsxTextElementHast) {
+  const alt =
+    node.type === 'element'
+      ? node.properties['alt']
+      : node.attributes.find((attribute) => attribute.type === 'mdxJsxAttribute' && attribute.name === 'alt')?.value
+
+  return typeof alt === 'string' ? alt.trim() : ''
 }
 
 export type ZoomableImageNode = Element | MdxJsxFlowElementHast
