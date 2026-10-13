@@ -1,11 +1,12 @@
 import 'mdast-util-mdx-jsx'
 import type { Root } from 'hast'
-import { CONTINUE, EXIT, SKIP, visit } from 'unist-util-visit'
+import { CONTINUE, SKIP, visit } from 'unist-util-visit'
 import { visitParents } from 'unist-util-visit-parents'
 
 import { STARLIGHT_IMAGE_ZOOM_ZOOMABLE_TAG } from './constants'
 import {
   ElementTagNames,
+  getAlt,
   hasDataZoomOffAttribute,
   isZoomPreventedByAncestor,
   makeImageZoomButton,
@@ -25,26 +26,7 @@ export function rehypeStarlightImageZoom() {
       const isInvalidImage = parents.some(isZoomPreventedByAncestor)
       if (isInvalidImage) return SKIP
 
-      let alt = ''
-
-      if (node.type === 'element' && node.tagName === 'img') {
-        alt = String(node.properties['alt']).trim()
-      } else if (node.type === 'element' && node.tagName === 'picture') {
-        visit(node, 'element', (child) => {
-          if (child.tagName !== 'img') {
-            return CONTINUE
-          }
-
-          alt = String(child.properties['alt']).trim()
-          return EXIT
-        })
-      } else if (node.type === 'mdxJsxFlowElement') {
-        const altAttribute = node.attributes.find(
-          (attribute) => attribute.type === 'mdxJsxAttribute' && attribute.name === 'alt',
-        )
-        // eslint-disable-next-line @typescript-eslint/no-base-to-string
-        alt = String(altAttribute?.value).trim()
-      }
+      const alt = getAlt(node)
 
       const parent = parents.at(-1)
       const index = parent?.children.indexOf(node)

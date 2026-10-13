@@ -56,6 +56,18 @@ for (const format of formats) {
     expect(await testPage.getZoomedImage().getAttribute('src')).toMatch(/-light.png$/)
   })
 
+  test(`${format}: labels the zoom button of a \`<picture>\` with its nested \`<img>\` alt`, async ({ testPage }) => {
+    await testPage.goto(slug)
+
+    await expect(testPage.page.getByRole('button', { name: 'Zoom image: Astro logomark' })).toBeVisible()
+  })
+
+  test(`${format}: labels the zoom button of an image with no alt text`, async ({ testPage }) => {
+    await testPage.goto(slug)
+
+    await expect(testPage.page.getByRole('button', { name: 'Zoom image', exact: true })).toHaveCount(2)
+  })
+
   test(`${format}: displays remote SVGs with no explicit width`, async ({ testPage }) => {
     await testPage.goto(slug)
 

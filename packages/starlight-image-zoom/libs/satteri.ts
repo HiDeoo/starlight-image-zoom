@@ -7,11 +7,11 @@ import {
   type HastVisitorContext,
   type MdastPluginDefinition,
 } from 'satteri'
-import { CONTINUE, EXIT, visit } from 'unist-util-visit'
 
 import { STARLIGHT_IMAGE_ZOOM_ZOOMABLE_TAG } from './constants'
 import {
   ElementTagNames,
+  getAlt,
   hasDataZoomOffAttribute,
   isZoomPreventedByAncestor,
   makeImageZoomButton,
@@ -106,34 +106,6 @@ function shouldSkipImage(node: ZoomableImageNode, ctx: HastVisitorContext) {
   }
 
   return false
-}
-
-function getAlt(node: ZoomableImageNode) {
-  if (node.type === 'mdxJsxFlowElement') {
-    const altAttribute = node.attributes.find(
-      (attribute) => attribute.type === 'mdxJsxAttribute' && attribute.name === 'alt',
-    )
-
-    // eslint-disable-next-line @typescript-eslint/no-base-to-string
-    return String(altAttribute?.value).trim()
-  }
-
-  if (node.tagName === 'img') {
-    return String(node.properties['alt']).trim()
-  }
-
-  let alt = ''
-
-  visit(node, 'element', (child) => {
-    if (child.tagName !== 'img') {
-      return CONTINUE
-    }
-
-    alt = String(child.properties['alt']).trim()
-    return EXIT
-  })
-
-  return alt
 }
 
 function isPicture(node: HastNode) {

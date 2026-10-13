@@ -36,3 +36,7 @@ An image using HTML syntax with the `picture` tag:
     src="https://astro.build/assets/press/astro-icon-dark.png"
   />
 </picture>
+
+An image using HTML syntax with the `img` tag and no alt text:
+
+<img src="https://astro.build/assets/press/astro-logo-light-gradient.png" />
