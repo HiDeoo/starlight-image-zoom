@@ -439,7 +439,7 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
         // If the image is inside a `<picture>` element, we need to update the `src` attribute and use the correct
         // source.
         if (
-          !isSVG &&
+          image instanceof HTMLImageElement &&
           image.parentElement?.tagName === 'PICTURE' &&
           image.currentSrc &&
           clone instanceof HTMLImageElement
