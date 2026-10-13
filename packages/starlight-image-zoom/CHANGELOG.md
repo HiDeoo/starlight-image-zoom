@@ -1,5 +1,17 @@
 # starlight-image-zoom
 
+## 0.16.2
+
+### Patch Changes
+
+- [#82](https://github.com/HiDeoo/starlight-image-zoom/pull/82) [`81e72b7`](https://github.com/HiDeoo/starlight-image-zoom/commit/81e72b7ee502413584006f2f2399fe7a1150c6e2) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Fixes a potential issue where zooming an image could be delayed when the browser is busy.
+
+- [#83](https://github.com/HiDeoo/starlight-image-zoom/pull/83) [`e3f7c6b`](https://github.com/HiDeoo/starlight-image-zoom/commit/e3f7c6bed6a455d7d489b529231bde4ffbd9a50c) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Fixes an issue where the search button could be hidden on narrow viewports after zooming an image.
+
+- [#79](https://github.com/HiDeoo/starlight-image-zoom/pull/79) [`16dbfbc`](https://github.com/HiDeoo/starlight-image-zoom/commit/16dbfbc9e0d87169330ac8daa29a9169a9d6c413) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Fixes invalid zoom button labels for `<picture>` elements in MDX files and for images using HTML syntax without an `alt` attribute.
+
+- [#81](https://github.com/HiDeoo/starlight-image-zoom/pull/81) [`a427792`](https://github.com/HiDeoo/starlight-image-zoom/commit/a4277924a4930fa867b6caef67b4d165cb9bc12c) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Fixes zoomed SVG images in a `<picture>` element not using the source selected by the browser.
+
 ## 0.16.1
 
 ### Patch Changes
