@@ -104,3 +104,19 @@ test('centers a zoomed SVG image while preserving its aspect ratio', async ({ te
   expect(zoomedBox.x).toBe(200)
   expect(zoomedBox.y).toBe(0)
 })
+
+test('restores the header padding after unzooming on a narrow viewport', async ({ testPage }) => {
+  await testPage.page.setViewportSize({ width: 375, height: 667 })
+  await testPage.goto('zoom')
+
+  const header = testPage.page.locator('header').first()
+  const getPadding = () => header.evaluate((el) => getComputedStyle(el).paddingInlineEnd)
+  const padding = await getPadding()
+
+  await testPage.zoomImage(testPage.getNthImage(0))
+  await testPage.closeZoomedImage()
+
+  await expect(testPage.getZoomedImage()).toHaveCount(0)
+
+  expect(await getPadding()).toBe(padding)
+})
