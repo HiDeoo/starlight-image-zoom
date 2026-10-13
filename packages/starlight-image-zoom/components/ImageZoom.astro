@@ -287,16 +287,22 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
         const figure = dialog?.querySelector('figure')
         if (!dialog || !figure) return
 
-        // Track some body style properties that will be overridden to prevent layout shifts.
+        // Track some body and header style properties that will be overridden to prevent layout shifts.
         const body: CurrentZoom['body'] = { overflow: document.body.style.overflow, width: document.body.style.width }
+        const header = document.querySelector('header')
+        const headerStyles: CurrentZoom['header'] = {
+          element: header,
+          paddingInlineEnd: header?.style.paddingInlineEnd ?? '',
+        }
 
         // Disable body scrolling and override some styles to prevent layout shifts.
         const clientWidth = document.body.clientWidth
         document.body.style.overflow = 'hidden'
         document.body.style.width = `${clientWidth}px`
-        document
-          .querySelector('header')
-          ?.style.setProperty('padding-inline-end', `calc(var(--sl-nav-pad-x) + ${window.innerWidth - clientWidth}px)`)
+        header?.style.setProperty(
+          'padding-inline-end',
+          `calc(${getComputedStyle(header).paddingInlineEnd} + ${window.innerWidth - clientWidth}px)`,
+        )
 
         // Clone the image and apply a zoom effect to it.
         const zoomedImage = this.#cloneAndZoomImage(image)
@@ -326,7 +332,7 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
         zoomedImage.style.transform = ''
         document.body.classList.add(this.#classList.opened)
 
-        this.#currentZoom = { body, dialog, image, zoomedImage }
+        this.#currentZoom = { body, dialog, header: headerStyles, image, zoomedImage }
       }
 
       #close(disableAnimation = false) {
@@ -353,7 +359,7 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
       #onUnzoomEnd = () => {
         if (!this.#currentZoom) return
 
-        const { dialog, image } = this.#currentZoom
+        const { dialog, header, image } = this.#currentZoom
 
         // Show the source image.
         document.body.classList.remove(this.#classList.transition)
@@ -365,7 +371,7 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
         // Restore some overridden styles.
         document.body.style.overflow = this.#currentZoom.body.overflow
         document.body.style.width = this.#currentZoom.body.width
-        document.querySelector('header')?.style.setProperty('padding-inline-end', 'var(--sl-nav-pad-x)')
+        header.element?.style.setProperty('padding-inline-end', header.paddingInlineEnd)
 
         // Reset the current zoom.
         this.#currentZoom = undefined
@@ -486,6 +492,7 @@ if (!config.showCaptions) dataAttributes['data-hide-caption'] = ''
   interface CurrentZoom {
     body: { overflow: string; width: string }
     dialog: HTMLDialogElement
+    header: { element: HTMLElement | null; paddingInlineEnd: string }
     image: ZoomableElement
     zoomedImage: ZoomableElement
   }
