@@ -1,5 +1,11 @@
 # starlight-image-zoom
 
+## 0.16.3
+
+### Patch Changes
+
+- [#85](https://github.com/HiDeoo/starlight-image-zoom/pull/85) [`286f0b0`](https://github.com/HiDeoo/starlight-image-zoom/commit/286f0b0b6cc7b0feaf2afa6a39ddd081ed51cf59) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Fixes an issue where code blocks lost their language and metadata when using Sätteri 0.11 or later, the default since Astro 7.4.7.
+
 ## 0.16.2
 
 ### Patch Changes
