@@ -1,4 +1,4 @@
-import type { Properties } from 'hast'
+import type { Element, Properties } from 'hast'
 import {
   defineHastPlugin,
   defineMdastPlugin,
@@ -46,15 +46,24 @@ export function satteriRestoreCodeMetadata(): HastPluginDefinition {
     element: {
       filter: ['pre'],
       visit(node, ctx) {
-        const lang = node.properties[CODE_LANG_PROPERTY]
-        const meta = node.properties[CODE_META_PROPERTY]
+        const code = node.children.find(
+          (child): child is Element => child.type === 'element' && child.tagName === 'code',
+        )
 
-        if (typeof lang !== 'string' && typeof meta !== 'string') return
+        // Sätteri before 0.11 applies code block `hProperties` to `<pre>` while 0.11+ applies them to `<code>`.
+        const source = [node, code].find(
+          (element) =>
+            typeof element?.properties[CODE_LANG_PROPERTY] === 'string' ||
+            typeof element?.properties[CODE_META_PROPERTY] === 'string',
+        )
 
-        ctx.setProperty(node, CODE_LANG_PROPERTY, null)
-        ctx.setProperty(node, CODE_META_PROPERTY, null)
+        if (!source) return
 
-        const code = node.children.find((child) => child.type === 'element' && child.tagName === 'code')
+        const lang = source.properties[CODE_LANG_PROPERTY]
+        const meta = source.properties[CODE_META_PROPERTY]
+
+        ctx.setProperty(source, CODE_LANG_PROPERTY, null)
+        ctx.setProperty(source, CODE_META_PROPERTY, null)
 
         if (!code) return
 
